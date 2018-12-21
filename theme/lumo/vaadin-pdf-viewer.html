@@ -1,1 +1,40 @@
 <link rel="import" href="../../src/vaadin-pdf-viewer.html">
+<link rel="import" href="../../../vaadin-lumo-styles/color.html">
+<link rel="import" href="../../../vaadin-lumo-styles/sizing.html">
+<link rel="import" href="../../../vaadin-lumo-styles/spacing.html">
+
+<dom-module id="lumo-pdf-viewer" theme-for="vaadin-pdf-viewer">
+  <template>
+    <style include="lumo-pdf-viewer-theme">
+      /* empty style block breaks polymer lint. see https://github.com/Polymer/tools/issues/408 */
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="lumo-pdf-viewer-theme">
+  <template>
+    <style>
+      #viewerContainer {
+        background-color: var(--lumo-shade);
+        padding: var(--lumo-space-s);
+      }
+      
+      #loadingBar {
+        background-color: red;
+        height: 1rem;
+      }
+
+      .progress {
+        background-color: blue;
+      }
+            
+      .page {
+        padding-bottom: var(--lumo-space-s);
+      }
+
+      .page:last-child {
+        padding-bottom: 0;
+      }
+    </style>
+  </template>
+</dom-module>
