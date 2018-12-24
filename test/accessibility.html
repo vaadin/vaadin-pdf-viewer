@@ -17,23 +17,22 @@
   </test-fixture>
 
   <script>
-    describe('sample test', function() {
-      var element;
+    describe('accessibility', () => {
+      'use strict';
 
-      beforeEach(function() {
-        element = fixture('default');
+      let test, content, editor;
+
+      beforeEach(() => {
+        test = fixture('default');
+        viewer = test.shadowRoot.querySelector('vaadin-pdf-viewer');
       });
 
-      it('should pass', function() {
-        expect(element.localName).to.be.equal('vaadin-pdf-viewer');
+      describe('screen readers', () => {
+        // We have no controls yet. They will come.
       });
 
-      it('should not expose class name globally', function() {
-        expect(window.VaadinPdfViewer).not.to.be.ok;
-      });
-
-      it('should have a valid version number', function() {
-        expect(element.constructor.version).to.match(/^(\d+\.)?(\d+\.)?(\d+)(-(alpha|beta)\d+)?$/);
+      describe('keyboard navigation', () => {
+        // We have no controls yet. They will come.
       });
 
     });
