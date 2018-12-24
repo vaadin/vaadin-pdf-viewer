@@ -6,11 +6,10 @@
       }
     </style>
 
-
     <h3>Showing a single page pdf inline from file system</h3>
     <vaadin-demo-snippet id="element-basic-demos-sample-example" when-defined="vaadin-pdf-viewer">
       <template preserve-content>
-        <vaadin-pdf-viewer src="invoice-example.pdf"></vaadin-pdf-viewer>
+        <vaadin-pdf-viewer src="pdf-files/example-invoice.pdf"></vaadin-pdf-viewer>
       </template>
     </vaadin-demo-snippet>
 
@@ -18,24 +17,14 @@
     <h3>Showing a multi page pdf inline from web url</h3>
     <vaadin-demo-snippet id="element-basic-demos-sample-example" when-defined="vaadin-pdf-viewer">
       <template preserve-content>
-        <vaadin-pdf-viewer src="https://bitcoin.org/bitcoin.pdf"></vaadin-pdf-viewer>
+        <vaadin-pdf-viewer src="pdf-files/bitcoin.pdf"></vaadin-pdf-viewer>
       </template>
     </vaadin-demo-snippet>
 
-    <h3>Loading a file as a data blob</h3>
+    <h3>No file specified</h3>
     <vaadin-demo-snippet id="element-basic-demos-sample-example" when-defined="vaadin-pdf-viewer">
       <template preserve-content>
         <vaadin-pdf-viewer></vaadin-pdf-viewer>
-        <script>
-          window.addDemoReadyListener('#element-basic-demos-sample-example', function (document) {
-            const element = document.querySelector('vaadin-pdf-viewer');
-            fetch("invoice-example.pdf").then(response => {
-              response.blob();
-            }).then(blob => {
-              element.data = blob;
-            });
-          });
-        </script>
       </template>
     </vaadin-demo-snippet>
   </template>
