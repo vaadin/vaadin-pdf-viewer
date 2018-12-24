@@ -8,7 +8,7 @@ This program is available under Apache License Version 2.0, available at https:/
 <link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
 <link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
 <script src="../vendor/pdf.js"></script>
-<!--<script src="node_modules/pdfjs-dist/web/pdf_viewer.js"></script>-->
+<script src="../vendor/pdf_viewer.js"></script>
 
 <dom-module id="vaadin-pdf-viewer">
   <template>
@@ -23,36 +23,20 @@ This program is available under Apache License Version 2.0, available at https:/
       :host([hidden]) {
         display: none !important;
       }
-      
+
       #viewerContainer {
-        display:flex;
-        align-content: center;
-        flex:1;
-        overflow:auto;
+        position: relative;
+        display: flex;
+        flex: 1;
+        overflow: auto;
+        justify-content: center;
       }
 
-      #loadingBar.hidden {
-        display:none;
-      }
     </style>
     <slot></slot>
-    <div id="header">
-      <button class="toolbarButton pageUp" title="Previous Page" id="previous">Previous page</button>
-      <button class="toolbarButton pageDown" title="Next Page" id="next">Next page</button>
-      <span id="title">{{title}}</span>
-      <input type="number" id="pageNumber" class="toolbarField pageNumber" value="1" size="4" min="1">
-
-      <button class="toolbarButton zoomOut" title="Zoom Out" id="zoomOut">Zoom out</button>
-      <button class="toolbarButton zoomIn" title="Zoom In" id="zoomIn">Zoom in</button>
-    </div>
-    <div id="loadingBar">
-      <div class="progress"></div>
-      <div class="glimmer"></div>
-    </div>
     <div id="viewerContainer">
-      <div id="viewer" class="pdfViewer"></div>
+      <div id="viewer"></div>
     </div>
-    {{src}}
   </template>
 
   <script>
@@ -80,72 +64,46 @@ This program is available under Apache License Version 2.0, available at https:/
 
         static get properties() {
           return {
-            src: {
-              type: String
-            },
-            title: {
-              type: String
-            }
+            src: String,
+            _viewer: Object,
+            _document: Object
           };
         }
 
         ready() {
           super.ready();
-          const component = this;
-          const PDFViewerApplication = {
-            pdfLoadingTask: null,
+          this._viewer = new pdfjsViewer.PDFViewer({
+            container: this.$.viewerContainer,
+            textLayerMode: 0,
+            viewer: this.$.viewer
+          });
+          const self = this;
+          this.$.viewerContainer.addEventListener('pagesinit', function () {
+            self._viewer.currentScaleValue = 'auto';
+          });
+          this.open(this.src);
+        }
 
-            open: function (params) {
-              if (this.pdfLoadingTask) {
-                // We need to destroy already opened document
-                return this.close().then(function () {
-                  // ... and repeat the open() call.
-                  return this.open(params);
-                }.bind(this));
-              }
-              console.log("open");
-              var url = params.url;
-              this.setTitleUsingUrl(url);
-            },
-
-            setTitleUsingUrl: function pdfViewSetTitleUsingUrl(url) {
-              this.url = url;
-              var title = pdfjsLib.getFilenameFromUrl(url) || url;
-              try {
-                title = decodeURIComponent(title);
-              } catch (e) {
-                // decodeURIComponent may throw URIError,
-                // fall back to using the unprocessed url in that case
-              }
-              this.setTitle(title);
-            },
-
-            setTitle: function pdfViewSetTitle(title) {
-              component.title = title;
-            },
+        open(src) {
+          // Is there already a document loaded?
+          if (this._document) {
+            // We need to close the current document
+            return this.close().then(function () {
+            // and start over with opening the new one
+              return this.open(src);
+            }.bind(this));
           }
-          document.addEventListener('DOMContentLoaded', function () {
-            PDFViewerApplication.initUI();
-          }, true);
-
-          (function animationStartedClosure() {
-            // The offsetParent is not set until the PDF.js iframe or object is visible.
-            // Waiting for first animation.
-            PDFViewerApplication.animationStartedPromise = new Promise(
-              function (resolve) {
-                window.requestAnimationFrame(resolve);
-              });
-          })();
-
-          // We need to delay opening until all HTML is loaded.
-          PDFViewerApplication.animationStartedPromise.then(function () {
-            console.log(component.src);
-            console.log("url set: " + component.src);
-            if (component.src) {
-              PDFViewerApplication.open({
-                url: component.src,
-              });
-            }
+          if (!src) {
+            // No file given, show nothing.
+            return;
+          }
+          this._document = pdfjsLib.getDocument(src);
+          var self = this;
+          return this._document.promise.then(function (pdfDocument) {
+            // Document loaded, specifying document for the viewer.
+            self._viewer.setDocument(pdfDocument);
+          }, function (exception) {
+            console.log(exception && exception.message);
           });
         }
       }
