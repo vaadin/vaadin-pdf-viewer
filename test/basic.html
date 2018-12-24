@@ -1,0 +1,68 @@
+<!doctype html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>vaadin-pdf-viewer tests</title>
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+  <link rel="import" href="../vaadin-pdf-viewer.html">
+</head>
+
+<body>
+  <test-fixture id="default">
+    <template>
+      <vaadin-pdf-viewer></vaadin-pdf-viewer>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="with-pdf">
+    <template>
+      <vaadin-pdf-viewer src="pdf-files/example-invoice.pdf"></vaadin-pdf-viewer>
+    </template>
+  </test-fixture>
+
+  <script>
+    describe('PDF Viewer', () => {
+      'use strict';
+
+      let viewer, editor;
+
+      beforeEach(() => {
+        viewer = fixture('default');
+        //viewer = viewer.shadowRoot.querySelector('vaadin-pdf-viewer');
+      });
+
+      describe('custom element definition', () => {
+        it('should have proper tag name', () => {
+          expect(viewer.localName).to.be.equal('vaadin-pdf-viewer');
+        });
+
+        it('should not expose class name globally', () => {
+          expect(window.RichTextEditorElement).not.to.be.ok;
+        });
+
+        it('should have a valid version number', () => {
+          expect(viewer.constructor.version).to.match(/^(\d+\.)?(\d+\.)?(\*|\d+)(-(alpha|beta)\d+)?$/);
+        });
+      });
+
+      describe('src', () => {
+        it('by default should be undefined', () => {
+          expect(viewer.src).to.be.undefined;
+        });
+
+        
+        it('should update the "src" when set from outside', () => {
+          viewer.src = "pdf-files/example-invoice.pdf";
+          expect(viewer.src).to.equal('pdf-files/example-invoice.pdf');
+        });
+
+        it('should correctly parse value from attribute', () => {
+          viewer = fixture('with-pdf');
+          expect(viewer.src).to.equal('pdf-files/example-invoice.pdf');
+        });
+      });
+    });
+  </script>
+</body>
