@@ -1,0 +1,32 @@
+<dom-module id="element-error-handling">
+  <template>
+    <style include="vaadin-component-demo-shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <h3>Try to load a file that can't be found</h3>
+    <vaadin-demo-snippet id="element-basic-demos-sample-example" when-defined="vaadin-pdf-viewer">
+      <template preserve-content>
+        <vaadin-pdf-viewer src="pdf-files/non-existing-file.pdf"></vaadin-pdf-viewer>
+      </template>
+    </vaadin-demo-snippet>
+
+
+    <h3>Try to load a file which the component is not able to read as a PDF</h3>
+    <vaadin-demo-snippet id="element-basic-demos-sample-example" when-defined="vaadin-pdf-viewer">
+      <template preserve-content>
+        <vaadin-pdf-viewer src="pdf-files/not-a-pdf.pdf"></vaadin-pdf-viewer>
+      </template>
+    </vaadin-demo-snippet>
+  </template>
+  <script>
+    class ElementErrorHandling extends DemoReadyEventEmitter(ElementDemo(Polymer.Element)) {
+      static get is() {
+        return 'element-error-handling';
+      }
+    }
+    customElements.define(ElementErrorHandling.is, ElementErrorHandling);
+  </script>
+</dom-module>

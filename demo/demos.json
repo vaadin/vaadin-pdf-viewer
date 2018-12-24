@@ -6,18 +6,18 @@
     "url": "element-basic-demos",
     "src": "element-basic-demos.html",
     "meta": {
-      "title": "Vaadin Element Basics",
+      "title": "Vaadin PDF Viewer Basics",
       "description": "",
       "image": ""
      }
   }
   ,
   {
-    "name": "Advanced Usage",
-    "url": "element-advanced-demos",
-    "src": "element-advanced-demos.html",
+    "name": "Error handling",
+    "url": "element-error-handling",
+    "src": "element-error-handling.html",
     "meta": {
-      "title": "Vaadin Element Advanced Examples",
+      "title": "Vaadin PDF Viewer Error Handling",
       "description": "",
       "image": ""
      }
