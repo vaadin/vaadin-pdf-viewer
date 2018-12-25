@@ -1,4 +1,4 @@
-gemini.suite('apollo-pdf-viewer', function(rootSuite) {
+gemini.suite('vaadin-pdf-viewer', function(rootSuite) {
   function wait(actions, find) {
     actions.wait(5000);
   }
@@ -19,7 +19,7 @@ gemini.suite('apollo-pdf-viewer', function(rootSuite) {
       suite
         .setUrl(`/default.html?theme=${theme}`)
         .setCaptureElements('#default-tests')
-        .capture(`apollo-pdf-viewer`);
+        .capture(`vaadin-pdf-viewer`);
     });
   });
 
