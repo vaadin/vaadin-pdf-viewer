@@ -43,10 +43,12 @@ Copyright (c) 2018 Vaadin Ltd.
     (function () {
 
       /**
-       * `<vaadin-pdf-viewer>` is a Web Component.
+       * `<vaadin-pdf-viewer>` is a Web Component for rendering PDF files without
+       * the need of plugins. You can provide a pdf file to it through the src
+       * attribute.
        *
        * ```
-       * <vaadin-pdf-viewer></vaadin-pdf-viewer>
+       * <vaadin-pdf-viewer src="myfile.pdf"></vaadin-pdf-viewer>
        * ```
        *
        * @memberof Vaadin
@@ -64,8 +66,20 @@ Copyright (c) 2018 Vaadin Ltd.
 
         static get properties() {
           return {
+            /**
+             * You can set a pdf file that you want to render with src. Note that regular cross
+             * site scripting (XSS) rules apply. This means that the file should be on the same
+             * server as where the component is run, or that the server where the file is on should
+             * be configured to allow loading files from other sites.
+             */
             src: String,
+            /** 
+             * The viewer, which takes care of rendering content into a DOM element
+             */
             _viewer: Object,
+            /**
+             * A represenentation of a document that has been read in. 
+             */
             _document: Object
           };
         }
