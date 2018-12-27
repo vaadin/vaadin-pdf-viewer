@@ -6,7 +6,7 @@
       }
     </style>
 
-    <h3>Try to load a file that can't be found</h3>
+    <h3>Try to Load a File That Can't Be Found</h3>
     <vaadin-demo-snippet id="pdf-viewer-error-handling-non-existing-file" when-defined="vaadin-pdf-viewer">
       <template preserve-content>
         <vaadin-pdf-viewer src="pdf-files/non-existing-file.pdf"></vaadin-pdf-viewer>
@@ -14,7 +14,7 @@
     </vaadin-demo-snippet>
 
 
-    <h3>Try to load a file which the component is not able to read as a PDF</h3>
+    <h3>Try to Load a File Which the Component Is Not Able to Read as a PDF</h3>
     <vaadin-demo-snippet id="pdf-viewer-error-handling-unreadable-file" when-defined="vaadin-pdf-viewer">
       <template preserve-content>
         <vaadin-pdf-viewer src="pdf-files/not-a-pdf.pdf"></vaadin-pdf-viewer>
@@ -22,7 +22,7 @@
     </vaadin-demo-snippet>
   </template>
   <script>
-    class PdfViewerErrorHandling extends DemoReadyEventEmitter(ElementDemo(Polymer.Element)) {
+    class PdfViewerErrorHandling extends DemoReadyEventEmitter(PdfViewerDemo(Polymer.Element)) {
       static get is() {
         return 'pdf-viewer-error-handling';
       }
