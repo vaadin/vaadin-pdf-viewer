@@ -2,7 +2,7 @@
   "rules": {
   },
   "globals": {
-    "ElementDemo": false,
+    "PdfViewerDemo": false,
     "DemoReadyEventEmitter": false
   }
 }
