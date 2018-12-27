@@ -2,16 +2,32 @@
 <link rel="import" href="../../../vaadin-lumo-styles/color.html">
 <link rel="import" href="../../../vaadin-lumo-styles/sizing.html">
 <link rel="import" href="../../../vaadin-lumo-styles/spacing.html">
+<link rel="import" href="../../../vaadin-lumo-styles/typography.html">
 
 <dom-module id="lumo-pdf-viewer" theme-for="vaadin-pdf-viewer">
   <template>
     <style>
-      #viewerContainer {
-        background-color: var(--lumo-shade-5pct);
+      :host {
+        background-color: var(--lumo-contrast-5pct);
         border: 1px solid var(--lumo-contrast-10pct);
         border-radius: var(--lumo-border-radius);
       }
 
+      #header {
+        border-bottom: 1px solid var(--lumo-contrast-10pct);
+        padding: 0 var(--lumo-space-m);
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        background-color: var(--lumo-contrast-5pct);
+      }
+
+      #title {
+        font-family: var(--lumo-font-family);
+        font-size: var(--lumo-font-size-m);
+        font-weight: 500;
+      }
+            
       .page {
         padding: var(--lumo-space-m);
         padding-bottom: 0;

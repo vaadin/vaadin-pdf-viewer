@@ -93,7 +93,9 @@ Copyright (c) 2018 Vaadin Ltd.
         top: 0px;
       }
     </style>
-
+    <div id="header">
+      <span id="title">{{_title}}</span>
+    </div>
     <div id="viewerContainer">
       <div id="viewer"></div>
     </div>
@@ -140,8 +142,44 @@ Copyright (c) 2018 Vaadin Ltd.
             /**
              * A represenentation of a document that has been read in. 
              */
-            _document: Object
+            _document: Object,
+            /**
+             * The title for the PDF shown in the header of component. It uses both the file name and
+             * the title in the PDF metadata if available.
+             */
+            _title: {
+              type: String,
+              value: "PDF"
+            },
+            /**
+             * Relative filename 
+             */
+            _filename: String,
+            /**
+             * The pdf metadata title
+             */
+            _pdfTitle: String
+
           };
+        }
+
+        static get observers() {
+          return [
+            'setTitle(_pdfTitle, _filename)'
+          ];
+        }
+
+        setTitle(_pdfTitle, _filename) {
+          console.log(_pdfTitle, _filename);
+          if(_pdfTitle && _filename) {
+            this._title = _pdfTitle + " - " + _filename;
+          } else if (_pdfTitle) {
+            this._title = _pdfTitle;
+          } else if ( _filename) {
+            this._title = _filename;
+          } else {
+            this._title = "PDF";
+          }
         }
 
         ready() {
@@ -170,12 +208,48 @@ Copyright (c) 2018 Vaadin Ltd.
             // No file given, show nothing.
             return;
           }
+          this.setFilename(src);
           this._document = pdfjsLib.getDocument(src);
           return this._document.promise.then((pdfDocument) => {
             // Document loaded, specifying document for the viewer.
             this._viewer.setDocument(pdfDocument);
+            this.setPdfTitleFromMetadata(pdfDocument);
+            this.dispatchEvent(new CustomEvent('document-loaded', {detail: {document: pdfDocument}}));
           }, function (exception) {
             console.error(exception && exception.message);
+          });
+        }
+
+        setFilename(src) {
+          let filename = pdfjsLib.getFilenameFromUrl(src) || src;
+          try {
+            filename = decodeURIComponent(filename);
+          } catch (e) {
+            // decodeURIComponent may throw URIError,
+            // fall back to using the unprocessed url in that case
+          }
+          this._filename = filename;
+        }
+
+        setPdfTitleFromMetadata(pdfDocument) {
+          const self = this;
+          pdfDocument.getMetadata().then(function (data) {
+            let pdfTitle;
+            const metadata = data.metadata;
+            if (metadata && metadata.has('dc:title')) {
+              const title = metadata.get('dc:title');
+              // Ghostscript sometimes returns 'Untitled', so prevent setting the
+              // title to 'Untitled'.
+              if (title !== 'Untitled') {
+                pdfTitle = title;
+              }
+            }
+
+            const info = data.info;
+            if (!pdfTitle && info && info['Title']) {
+              pdfTitle = info['Title'];
+            }
+            self._pdfTitle = pdfTitle;
           });
         }
       }
