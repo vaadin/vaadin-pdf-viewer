@@ -1,12 +1,12 @@
 {
-  "name": "Vaadin Element",
+  "name": "PDF Viewer",
   "pages": [
   {
     "name": "Basics",
-    "url": "element-basic-demos",
-    "src": "element-basic-demos.html",
+    "url": "pdf-viewer-basic-demos",
+    "src": "pdf-viewer-basic-demos.html",
     "meta": {
-      "title": "Vaadin PDF Viewer Basics",
+      "title": "PDF Viewer Basics",
       "description": "",
       "image": ""
      }
@@ -14,10 +14,10 @@
   ,
   {
     "name": "Error handling",
-    "url": "element-error-handling",
-    "src": "element-error-handling.html",
+    "url": "pdf-viewer-error-handling",
+    "src": "pdf-viewer-error-handling.html",
     "meta": {
-      "title": "Vaadin PDF Viewer Error Handling",
+      "title": "PDF Viewer Error Handling",
       "description": "",
       "image": ""
      }

@@ -1,4 +1,4 @@
-<dom-module id="element-basic-demos">
+<dom-module id="pdf-viewer-basic-demos">
   <template>
     <style include="vaadin-component-demo-shared-styles">
       :host {
@@ -7,7 +7,7 @@
     </style>
 
     <h3>Showing a single page pdf inline from file system</h3>
-    <vaadin-demo-snippet id="element-basic-demos-sample-example" when-defined="vaadin-pdf-viewer">
+    <vaadin-demo-snippet id="pdf-viewer-basic-demos-single-page" when-defined="vaadin-pdf-viewer">
       <template preserve-content>
         <vaadin-pdf-viewer src="pdf-files/example-invoice.pdf"></vaadin-pdf-viewer>
       </template>
@@ -15,25 +15,25 @@
 
 
     <h3>Showing a multi page pdf inline from file system</h3>
-    <vaadin-demo-snippet id="element-basic-demos-sample-example" when-defined="vaadin-pdf-viewer">
+    <vaadin-demo-snippet id="pdf-viewer-basic-demos-multi-page" when-defined="vaadin-pdf-viewer">
       <template preserve-content>
         <vaadin-pdf-viewer src="pdf-files/bitcoin.pdf"></vaadin-pdf-viewer>
       </template>
     </vaadin-demo-snippet>
 
     <h3>No file specified</h3>
-    <vaadin-demo-snippet id="element-basic-demos-sample-example" when-defined="vaadin-pdf-viewer">
+    <vaadin-demo-snippet id="pdf-viewer-basic-demos-no-file" when-defined="vaadin-pdf-viewer">
       <template preserve-content>
         <vaadin-pdf-viewer></vaadin-pdf-viewer>
       </template>
     </vaadin-demo-snippet>
   </template>
   <script>
-    class ElementBasicDemos extends DemoReadyEventEmitter(ElementDemo(Polymer.Element)) {
+    class PdfViewerBasicDemos extends DemoReadyEventEmitter(ElementDemo(Polymer.Element)) {
       static get is() {
-        return 'element-basic-demos';
+        return 'pdf-viewer-basic-demos';
       }
     }
-    customElements.define(ElementBasicDemos.is, ElementBasicDemos);
+    customElements.define(PdfViewerBasicDemos.is, PdfViewerBasicDemos);
   </script>
 </dom-module>
