@@ -1,0 +1,71 @@
+<!doctype html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>vaadin-pdf-viewer tests</title>
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+  <link rel="import" href="../vaadin-pdf-viewer.html">
+</head>
+
+<body>
+  <test-fixture id="no-file">
+    <template>
+      <vaadin-pdf-viewer></vaadin-pdf-viewer>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="with-pdf-no-metadata-title">
+    <template>
+      <vaadin-pdf-viewer src="pdf-files/example-invoice.pdf"></vaadin-pdf-viewer>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="with-pdf-with-metadata-title">
+      <template>
+        <vaadin-pdf-viewer src="pdf-files/vaadin.pdf"></vaadin-pdf-viewer>
+      </template>
+    </test-fixture>
+  
+  <script>
+    describe('Title', () => {
+      'use strict';
+
+      let viewer, editor;
+
+
+      beforeEach(() => {
+        
+      });
+
+      describe('test title rendering', () => {
+        it('should read PDF when there is no file', () => {
+          viewer = fixture('no-file');
+          const title = viewer.shadowRoot.querySelector('#title');
+          expect(title.innerHTML).to.be.equal('PDF');
+        });
+
+        it('should read title when file available and no metadata', () => {
+          viewer = fixture('with-pdf-no-metadata-title');
+          const title = viewer.shadowRoot.querySelector('#title');
+          expect(title.innerHTML).to.be.equal('example-invoice.pdf');
+        });
+
+        it('should read title when both file and metadata available', () => {
+          viewer = fixture('with-pdf-with-metadata-title');
+          console.log("adding listener");
+          console.log(viewer);
+          viewer.addEventListener('document-loaded', function (e) {
+              console.log("in listener"); // true
+              const title = viewer.shadowRoot.querySelector('#title');
+              console.log(title.innerHTML);
+          });
+          const title = viewer.shadowRoot.querySelector('#title');
+          console.log(title.innerHTML);
+          expect(title.innerHTML).to.be.equal('PDF');
+        });
+      });
+    });
+  </script>
+</body>

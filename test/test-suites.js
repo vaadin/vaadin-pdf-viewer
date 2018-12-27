@@ -1,4 +1,5 @@
 window.VaadinPdfViewerSuites = [
   'accessibility.html',
-  'basic.html'
+  'basic.html',
+  'title.html'
 ];
