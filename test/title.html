@@ -23,11 +23,11 @@
   </test-fixture>
 
   <test-fixture id="with-pdf-with-metadata-title">
-      <template>
-        <vaadin-pdf-viewer src="pdf-files/vaadin.pdf"></vaadin-pdf-viewer>
-      </template>
-    </test-fixture>
-  
+    <template>
+      <vaadin-pdf-viewer src="pdf-files/vaadin.pdf"></vaadin-pdf-viewer>
+    </template>
+  </test-fixture>
+
   <script>
     describe('Title', () => {
       'use strict';
@@ -36,7 +36,7 @@
 
 
       beforeEach(() => {
-        
+
       });
 
       describe('test title rendering', () => {
@@ -52,18 +52,20 @@
           expect(title.innerHTML).to.be.equal('example-invoice.pdf');
         });
 
-        it('should read title when both file and metadata available', () => {
+        it('should read title when both file and metadata available', (done) => {
           viewer = fixture('with-pdf-with-metadata-title');
-          console.log("adding listener");
-          console.log(viewer);
           viewer.addEventListener('document-loaded', function (e) {
-              console.log("in listener"); // true
-              const title = viewer.shadowRoot.querySelector('#title');
-              console.log(title.innerHTML);
+            // TODO: How should I be able to test something that happens
+            // in a listener? According to 
+            // https://polymer-library.polymer-project.org/2.0/docs/tools/tests#async,
+            // I can pass in `done` parameter and call `done()` when everything
+            // has happened, but this didn't work for me.
+            const title = viewer.shadowRoot.querySelector('#title');
+            expect(title.innerHTML).to.be.equal('2018-04-05 Vaadin Insights.key - vaadin.pdf');
+            done();
           });
           const title = viewer.shadowRoot.querySelector('#title');
-          console.log(title.innerHTML);
-          expect(title.innerHTML).to.be.equal('PDF');
+          expect(title.innerHTML).to.be.equal('vaadin.pdf');
         });
       });
     });

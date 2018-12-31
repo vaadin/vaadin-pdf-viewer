@@ -27,6 +27,23 @@
         <vaadin-pdf-viewer></vaadin-pdf-viewer>
       </template>
     </vaadin-demo-snippet>
+
+    <h3>Run Code When PDF is Fully Loaded</h3>
+    <vaadin-demo-snippet id="pdf-viewer-basic-demos-document-loaded" when-defined="vaadin-pdf-viewer">
+      <template preserve-content>
+        <vaadin-pdf-viewer src="pdf-files/example-invoice.pdf"></vaadin-pdf-viewer>
+        <div id="status">Loading...</div>
+        <script>
+          window.addDemoReadyListener('#pdf-viewer-basic-demos-document-loaded', function (document) {
+            var start = new Date().getTime();
+            const viewer = document.querySelector('vaadin-pdf-viewer');
+            viewer.addEventListener('document-loaded', function(event) {
+              status.innerHTML = 'Document loaded in ' + (new Date().getTime() - start) + 'ms';
+            });
+          });
+        </script>
+      </template>
+    </vaadin-demo-snippet>
   </template>
   <script>
     class PdfViewerBasicDemos extends DemoReadyEventEmitter(PdfViewerDemo(Polymer.Element)) {
