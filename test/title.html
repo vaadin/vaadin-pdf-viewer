@@ -55,14 +55,17 @@
         it('should read title when both file and metadata available', (done) => {
           viewer = fixture('with-pdf-with-metadata-title');
           viewer.addEventListener('document-loaded', function (e) {
-            // TODO: How should I be able to test something that happens
-            // in a listener? According to 
-            // https://polymer-library.polymer-project.org/2.0/docs/tools/tests#async,
-            // I can pass in `done` parameter and call `done()` when everything
-            // has happened, but this didn't work for me.
             const title = viewer.shadowRoot.querySelector('#title');
-            expect(title.innerHTML).to.be.equal('2018-04-05 Vaadin Insights.key - vaadin.pdf');
-            done();
+            // The title update doesn't seem to happen syncronously, even if the 
+            // property is updated before the expect() is run, so this required
+            // and extra small timeout
+            setTimeout(function () {
+              console.log("title was: " + title.innerHTML +
+              ", expected: 2018-04-05 Vaadin Insights.key - vaadin.pdf");
+              expect(title.innerHTML).to.be.equal('2018-04-05 Vaadin Insights.key - vaadin.pdf');
+              done();  
+            }, 1000);
+            
           });
           const title = viewer.shadowRoot.querySelector('#title');
           expect(title.innerHTML).to.be.equal('vaadin.pdf');
