@@ -3,30 +3,98 @@
 <link rel="import" href="../../../vaadin-lumo-styles/sizing.html">
 <link rel="import" href="../../../vaadin-lumo-styles/spacing.html">
 <link rel="import" href="../../../vaadin-lumo-styles/typography.html">
+<link rel="import" href="../../../vaadin-lumo-styles/font-icons.html">
+
 
 <dom-module id="lumo-pdf-viewer" theme-for="vaadin-pdf-viewer">
   <template>
     <style>
       :host {
-        background-color: var(--lumo-contrast-5pct);
+        background-color: var(--lumo-base-color);
         border: 1px solid var(--lumo-contrast-10pct);
         border-radius: var(--lumo-border-radius);
+      }
+
+      #viewerContainer {
+        background-color: var(--lumo-contrast-5pct);
       }
 
       #header {
         border-bottom: 1px solid var(--lumo-contrast-10pct);
         padding: 0 var(--lumo-space-m);
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        background-color: var(--lumo-contrast-5pct);
+        box-shadow: 0 4px 4px -1px hsla(214, 53%, 23%, 0.16), 0px 1px 2px -1px hsla(214, 47%, 21%, 0.38);
+        z-index: 2;
+      }
+
+      #footer {
+        box-shadow: 0 -4px 4px -1px hsla(214, 53%, 23%, 0.16), 0px -1px 2px -1px hsla(214, 47%, 21%, 0.38);
+        z-index: 2;
+        line-height: 2.25rem;
+      }
+      
+      #pageSeparator {
+        padding: 0 var(--lumo-space-xs);
+      }
+
+      #totalPages {
+        padding-right: var(--lumo-space-m);
       }
 
       #title {
-        font-family: var(--lumo-font-family);
-        font-size: var(--lumo-font-size-m);
-        font-weight: 500;
+        line-height: 2.25rem;
+        display:inline-block;
+        color: var(--lumo-contrast-80pct);
       }
+
+      [part~="toolbar-button"] {
+        width: var(--lumo-size-m);
+        height: var(--lumo-size-m);
+        border-radius: var(--lumo-border-radius);
+        color: var(--lumo-contrast-80pct);
+        margin: 2px 1px;
+        cursor: default;
+        transition: background-color 100ms, color 100ms;
+        padding: 0;
+        font: inherit;
+        line-height: 1;
+        text-transform: none;
+        background: transparent;
+        border: none;
+        position: relative;
+      }
+
+      [part~="toolbar-button"]:disabled {
+        color: var(--lumo-contrast-40pct);
+      }
+
+      [part~="toolbar-button"]:hover {
+        background-color: var(--lumo-contrast-5pct);
+        color: var(--lumo-contrast-80pct);
+      }
+
+      [part~="toolbar-button"]:disabled:hover {
+        background-color: transparent;
+        color: var(--lumo-contrast-40pct);
+      }
+
+      [part~="toolbar-button"]:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--lumo-primary-color-50pct);
+      }
+      [part~="toolbar-button"] {
+        font-family: 'lumo-icons';
+        font-size: var(--lumo-icon-size-m);
+      }
+      
+
+      [part~="toolbar-button-previous-page"]::before {
+        content: var(--lumo-icons-angle-up);
+      }
+
+      [part~="toolbar-button-next-page"]::before {
+        content: var(--lumo-icons-angle-down);
+      }
+
       .page {
         padding: var(--lumo-space-m);
         padding-bottom: 0;

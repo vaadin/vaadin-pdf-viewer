@@ -1,0 +1,112 @@
+<!doctype html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>vaadin-pdf-viewer tests</title>
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+  <link rel="import" href="../vaadin-pdf-viewer.html">
+</head>
+
+<body>
+  <test-fixture id="no-file">
+    <template>
+      <vaadin-pdf-viewer></vaadin-pdf-viewer>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="one-pager">
+    <template>
+      <vaadin-pdf-viewer src="pdf-files/example-invoice.pdf"></vaadin-pdf-viewer>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="multi-page">
+      <template>
+        <vaadin-pdf-viewer src="pdf-files/bitcoin.pdf"></vaadin-pdf-viewer>
+      </template>
+    </test-fixture>
+
+  <script>
+    describe('PDF Viewer', () => {
+      'use strict';
+
+      let viewer, editor;
+
+      beforeEach(() => {
+      });
+
+      describe('no document', () => {
+        it('page controls should not be visible', () => {
+          viewer = fixture('no-file');
+          const footer = viewer.shadowRoot.querySelector('#currentPage');
+          const display = getComputedStyle(footer, null).display;
+          console.log(display);
+          
+          expect(display).to.be.equal('none');
+        });
+      });
+
+      describe('single page', (done) => {
+        it('page controls should be visible', (done) => {
+          viewer = fixture('one-pager');
+          viewer.addEventListener('document-loaded', function (e) {
+            setTimeout(function () {
+              expect(getComputedStyle(viewer.shadowRoot.querySelector('#currentPage'), null).display).to.be.equal('block');
+              expect(viewer.shadowRoot.querySelector('#currentPage').innerHTML).to.be.equal('1');
+              expect(viewer.shadowRoot.querySelector('#totalPages').innerHTML).to.be.equal('1');
+              expect(viewer.shadowRoot.querySelector('#previousPage').disabled).to.be.true;
+              expect(viewer.shadowRoot.querySelector('#nextPage').disabled).to.be.true;
+              done();  
+            }, 1000);
+          });
+        });
+      });
+
+      describe('multi page', (done) => {
+        it('page controls should be visible', (done) => {
+          viewer = fixture('multi-page');
+          viewer.addEventListener('document-loaded', function (e) {
+            setTimeout(function () {
+              const currentPage = viewer.shadowRoot.querySelector('#currentPage');
+              const totalPages = viewer.shadowRoot.querySelector('#totalPages');
+              const previousPage = viewer.shadowRoot.querySelector('#previousPage');
+              const nextPage = viewer.shadowRoot.querySelector('#nextPage');
+
+              expect(getComputedStyle(currentPage, null).display).to.be.equal('block');
+              expect(currentPage.innerHTML).to.be.equal('1');
+              expect(totalPages.innerHTML).to.be.equal('9');
+              expect(previousPage.disabled).to.be.true;
+              expect(nextPage.disabled).to.be.false;
+
+              nextPage.click();
+              expect(currentPage.innerHTML).to.be.equal('2');
+              expect(previousPage.disabled).to.be.false;
+
+              previousPage.click();
+              expect(currentPage.innerHTML).to.be.equal('1');
+              expect(previousPage.disabled).to.be.true;
+
+              previousPage.click();
+              expect(currentPage.innerHTML).to.be.equal('1');
+              expect(previousPage.disabled).to.be.true;
+              for(let i = 0;i<8;i++){
+                nextPage.click();
+              }
+              expect(currentPage.innerHTML).to.be.equal('9');
+              expect(previousPage.disabled).to.be.false;
+              expect(nextPage.disabled).to.be.true;
+
+              nextPage.click();
+              expect(currentPage.innerHTML).to.be.equal('9');
+              expect(nextPage.disabled).to.be.true;
+
+              done(); 
+            }, 1000);
+          });
+        });
+      });
+    });
+  </script>
+</body>

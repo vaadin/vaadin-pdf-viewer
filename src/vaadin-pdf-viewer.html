@@ -7,6 +7,7 @@ Copyright (c) 2018 Vaadin Ltd.
 <link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
 <link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
 <link rel="import" href="../../vaadin-license-checker/vaadin-license-checker.html">
+<link rel="import" href="../../vaadin-text-field/vaadin-text-field.html">
 <!-- pdf.js enables reading in PDF files and building a JS data representation of it -->
 <script src="../../pdfjs-dist/build/pdf.min.js"></script>
 <!-- pdf_viewer.js enables rendering a pdf.js -read file into DOM -->
@@ -92,9 +93,46 @@ Copyright (c) 2018 Vaadin Ltd.
       .textLayer .endOfContent.active {
         top: 0;
       }
+
+      #header {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+      }
+
+      #currentPage {
+        align-self: baseline;
+      }
+
+      #headerSpacer {
+        flex:1;
+      } 
+
+      #header #currentPage,
+      #header #pageSeparator,
+      #header #totalPages,
+      #header #previousPage,
+      #header #nextPage {
+        display: none;
+      }
+
+      #header.ready #currentPage,
+      #header.ready #pageSeparator,
+      #header.ready #totalPages,
+      #header.ready #previousPage,
+      #header.ready #nextPage {
+        display: initial;
+      }
     </style>
+    
     <div id="header">
       <span id="title">{{__title}}</span>
+      <span id="headerSpacer"></span>
+        <vaadin-text-field id="currentPage" value="{{_currentPage}}"></vaadin-text-field>
+        <span id="pageSeparator">/</span>
+        <span id="totalPages">{{_totalPages}}</span>
+        <button id="previousPage" on-click="previousPage" part="toolbar-button toolbar-button-previous-page"></button>
+        <button id="nextPage" on-click="nextPage" part="toolbar-button toolbar-button-next-page"></button>
     </div>
     <div id="viewerContainer">
       <div id="viewer"></div>
@@ -158,7 +196,18 @@ Copyright (c) 2018 Vaadin Ltd.
             /**
              * The pdf metadata title
              */
-            __pdfTitle: String
+            __pdfTitle: String,
+            /**
+             * The current page visible viewed right now
+             */
+            __currentPage: {
+              type: Number,
+              value: 1
+            },
+            /**
+             * Total amount of pages in an opened document
+             */
+            __totalPages: Number
 
           };
         }
@@ -192,6 +241,10 @@ Copyright (c) 2018 Vaadin Ltd.
           this.$.viewerContainer.addEventListener('pagesinit', () => {
             this.__viewer.currentScaleValue = 'auto';
           });
+          this.$.viewerContainer.addEventListener('pagechange', (event) => {
+            this._currentPage = event.pageNumber;
+            this.updatePageNumberStates();
+          });
           this.open(this.src);
         }
 
@@ -215,8 +268,15 @@ Copyright (c) 2018 Vaadin Ltd.
             // Document loaded, specifying document for the viewer.
             this.__viewer.setDocument(pdfDocument);
             this.setPdfTitleFromMetadata(pdfDocument);
-            this.dispatchEvent(new CustomEvent('document-loaded', {detail: {document: pdfDocument}}));
-          }, function(exception) {
+            this.$.header.classList.add('ready');
+            this.__totalPages = pdfDocument.numPages;
+            this.updatePageNumberStates();
+            this.dispatchEvent(new CustomEvent('document-loaded', {
+              detail: {
+                document: pdfDocument
+              }
+            }));
+          }, function (exception) {
             console.error(exception && exception.message);
           });
         }
@@ -252,6 +312,20 @@ Copyright (c) 2018 Vaadin Ltd.
             }
             this.__pdfTitle = pdfTitle;
           });
+        }
+
+        updatePageNumberStates(){
+          this.$.previousPage.disabled = (this._currentPage == 1);
+          this.$.nextPage.disabled = (this._currentPage == this._totalPages);
+        }
+
+        previousPage(){
+          this._viewer.currentPageNumber--;
+          
+        }
+        
+        nextPage(){
+          this._viewer.currentPageNumber++;
         }
       }
 
