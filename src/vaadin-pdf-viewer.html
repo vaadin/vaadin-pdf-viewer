@@ -105,8 +105,8 @@ Copyright (c) 2018 Vaadin Ltd.
       }
 
       #headerSpacer {
-        flex:1;
-      } 
+        flex: 1;
+      }
 
       #header #currentPage,
       #header #pageSeparator,
@@ -124,15 +124,15 @@ Copyright (c) 2018 Vaadin Ltd.
         display: initial;
       }
     </style>
-    
+
     <div id="header">
       <span id="title">{{__title}}</span>
       <span id="headerSpacer"></span>
-        <vaadin-text-field id="currentPage" value="{{_currentPage}}"></vaadin-text-field>
-        <span id="pageSeparator">/</span>
-        <span id="totalPages">{{_totalPages}}</span>
-        <button id="previousPage" on-click="previousPage" part="toolbar-button toolbar-button-previous-page"></button>
-        <button id="nextPage" on-click="nextPage" part="toolbar-button toolbar-button-next-page"></button>
+      <vaadin-text-field id="currentPage" value="{{_currentPage}}"></vaadin-text-field>
+      <span id="pageSeparator">/</span>
+      <span id="totalPages">{{_totalPages}}</span>
+      <button id="previousPage" on-click="previousPage" part="toolbar-button toolbar-button-previous-page"></button>
+      <button id="nextPage" on-click="nextPage" part="toolbar-button toolbar-button-next-page"></button>
     </div>
     <div id="viewerContainer">
       <div id="viewer"></div>
@@ -140,7 +140,7 @@ Copyright (c) 2018 Vaadin Ltd.
   </template>
 
   <script>
-    (function() {
+    (function () {
 
       /**
        * `<vaadin-pdf-viewer>` is a Web Component for rendering PDF files without
@@ -314,17 +314,16 @@ Copyright (c) 2018 Vaadin Ltd.
           });
         }
 
-        updatePageNumberStates(){
+        updatePageNumberStates() {
           this.$.previousPage.disabled = (this._currentPage == 1);
           this.$.nextPage.disabled = (this._currentPage == this._totalPages);
         }
 
-        previousPage(){
+        previousPage() {
           this._viewer.currentPageNumber--;
-          
         }
-        
-        nextPage(){
+
+        nextPage() {
           this._viewer.currentPageNumber++;
         }
       }
