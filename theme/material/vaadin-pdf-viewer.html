@@ -1,13 +1,79 @@
 <link rel="import" href="../../src/vaadin-pdf-viewer.html">
 <link rel="import" href="../../../vaadin-material-styles/color.html">
+<link rel="import" href="../../../vaadin-text-field/theme/material/vaadin-text-field-styles.html">
 
 <dom-module id="material-pdf-viewer" theme-for="vaadin-pdf-viewer">
   <template>
-    <style include="material-pdf-viewer-theme">
+    <style>
       #viewerContainer {
         background-color: var(--material-secondary-background-color);
         border: 1px solid rgba(0, 0, 0, 0.12);
         border-radius: 3px;
+      }
+
+      [part~="toolbar"] {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0 8px;
+        z-index: 2;
+      }
+
+      [part~="toolbar-spacer"] {
+        flex: 1;
+      }
+
+      [part~="toolbar-current-page"] {
+        width: 3.25em;
+      }
+
+      [part~="toolbar-page-separator"] {
+        padding: 0 4px;
+      }
+
+      [part~="toolbar-total-pages"] {
+        padding-right: 4px;
+      }
+
+      [part~="toolbar-title"] {
+        line-height: 2.25rem;
+        display: inline-block;
+        padding: 4px 0;
+      }
+
+      [part~="toolbar-button"] {
+        width: 32px;
+        height: 32px;
+        color: black;
+        margin: 2px;
+        background: transparent;
+        border: none;
+        opacity: 0.7;
+      }
+
+      [part~="toolbar-button"]:disabled {
+        opacity: 0.4;
+      }
+
+      [part~="toolbar-button"]:hover {
+        opacity: 1;
+      }
+
+      [part~="toolbar-button"]:disabled:hover {
+        opacity: 0.4;
+      }
+
+      [part~="toolbar-button"] {
+        font-family: 'lumo-icons';
+        font-size: var(--lumo-icon-size-m);
+      }
+
+      [part~="toolbar-button-previous-page"]::before {
+        content: url('baseline-keyboard_arrow_up-24px.svg');
+      }
+
+      [part~="toolbar-button-next-page"]::before {
+        content: url('baseline-keyboard_arrow_down-24px.svg');
       }
 
       .page {
