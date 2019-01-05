@@ -53,7 +53,7 @@
           viewer = fixture('one-pager');
           viewer.addEventListener('document-loaded', function (e) {
             setTimeout(function () {
-              expect(getComputedStyle(viewer.shadowRoot.querySelector('#currentPage'), null).display).to.be.equal('block');
+              expect(getComputedStyle(viewer.shadowRoot.querySelector('#currentPage'), null).display).to.be.equal('flex');
               expect(viewer.shadowRoot.querySelector('#currentPage').value).to.be.equal(1);
               expect(viewer.shadowRoot.querySelector('#totalPages').innerHTML).to.be.equal('1');
               expect(viewer.shadowRoot.querySelector('#previousPage').disabled).to.be.true;
@@ -65,7 +65,7 @@
       });
 
       describe('multi page', (done) => {
-        it('page controls should be visible', (done) => {
+        it('arrow buttons should work', (done) => {
           viewer = fixture('multi-page');
           viewer.addEventListener('document-loaded', function (e) {
             setTimeout(function () {
@@ -74,7 +74,7 @@
               const previousPage = viewer.shadowRoot.querySelector('#previousPage');
               const nextPage = viewer.shadowRoot.querySelector('#nextPage');
 
-              expect(getComputedStyle(currentPage, null).display).to.be.equal('block');
+              expect(getComputedStyle(currentPage, null).display).to.be.equal('flex');
               expect(currentPage.value).to.be.equal(1);
               expect(totalPages.innerHTML).to.be.equal('9');
               expect(previousPage.disabled).to.be.true;
