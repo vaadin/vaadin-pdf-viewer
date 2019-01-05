@@ -10,8 +10,13 @@ Copyright (c) 2018 Vaadin Ltd.
 <link rel="import" href="../../vaadin-text-field/vaadin-text-field.html">
 <!-- pdf.js enables reading in PDF files and building a JS data representation of it -->
 <script src="../../pdfjs-dist/build/pdf.min.js"></script>
+<!-- pdf.js internally loads pdf.worker. If it is not directly referenced, then build 
+     steps will not copy over the file and the component fails in production. To have
+     it available is the only reason why it is referenced here. -->
+<script src="../../pdfjs-dist/build/pdf.worker.min.js"></script>
 <!-- pdf_viewer.js enables rendering a pdf.js -read file into DOM -->
 <script src="../../pdfjs-dist/web/pdf_viewer.js"></script>
+
 
 <dom-module id="vaadin-pdf-viewer">
   <template>
