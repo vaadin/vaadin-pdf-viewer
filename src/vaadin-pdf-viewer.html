@@ -32,6 +32,22 @@ Copyright (c) 2018 Vaadin Ltd.
         display: none !important;
       }
 
+      #toolbar #currentPage,
+      #toolbar #pageSeparator,
+      #toolbar #totalPages,
+      #toolbar #previousPage,
+      #toolbar #nextPage {
+        display: none;
+      }
+
+      #toolbar.ready #currentPage,
+      #toolbar.ready #pageSeparator,
+      #toolbar.ready #totalPages,
+      #toolbar.ready #previousPage,
+      #toolbar.ready #nextPage {
+        display: inherit;
+      }
+
       #viewerContainer {
         position: relative;
         display: flex;
@@ -129,18 +145,17 @@ Copyright (c) 2018 Vaadin Ltd.
         display: inherit;
       }
     </style>
-
-    <div id="header">
-      <span id="title">{{__title}}</span>
-      <span id="headerSpacer"></span>
-      <vaadin-text-field id="currentPage" value="{{_currentPage}}"></vaadin-text-field>
-      <span id="pageSeparator">/</span>
-      <span id="totalPages">{{_totalPages}}</span>
-      <button id="previousPage" on-click="previousPage" part="toolbar-button toolbar-button-previous-page"></button>
-      <button id="nextPage" on-click="nextPage" part="toolbar-button toolbar-button-next-page"></button>
+    <div id="toolbar" part="toolbar">
+      <span id="title" part="toolbar-text toolbar-title">{{__title}}</span>
+      <span id="toolbarSpacer" part="toolbar-spacer"></span>
+      <vaadin-text-field id="currentPage" part="toolbar-current-page" value="{{__currentPage}}" on-change="_pageChange"></vaadin-text-field>
+      <span id="pageSeparator" part="toolbar-text toolbar-page-separator">/</span>
+      <span id="totalPages" part="toolbar-text toolbar-total-pages">{{__totalPages}}</span>
+      <button id="previousPage" part="toolbar-button toolbar-button-previous-page" on-click="previousPage"></button>
+      <button id="nextPage" part="toolbar-button toolbar-button-next-page" on-click="nextPage"></button>
     </div>
-    <div id="viewerContainer">
-      <div id="viewer"></div>
+    <div id="viewerContainer" part="viewer-container">
+      <div id="viewer" part="viewer"></div>
     </div>
   </template>
 
@@ -187,7 +202,7 @@ Copyright (c) 2018 Vaadin Ltd.
              */
             __document: Object,
             /**
-             * The title for the PDF shown in the header of component. It uses both the file name and
+             * The title for the PDF shown in the toolbar of component. It uses both the file name and
              * the title in the PDF metadata if available.
              */
             __title: {
@@ -247,8 +262,8 @@ Copyright (c) 2018 Vaadin Ltd.
             this.__viewer.currentScaleValue = 'auto';
           });
           this.$.viewerContainer.addEventListener('pagechange', (event) => {
-            this._currentPage = event.pageNumber;
-            this.updatePageNumberStates();
+            this.__currentPage = event.pageNumber;
+            this._updatePageNumberStates();
           });
           this.open(this.src);
         }
@@ -273,9 +288,9 @@ Copyright (c) 2018 Vaadin Ltd.
             // Document loaded, specifying document for the viewer.
             this.__viewer.setDocument(pdfDocument);
             this.setPdfTitleFromMetadata(pdfDocument);
-            this.$.header.classList.add('ready');
+            this.$.toolbar.classList.add('ready');
             this.__totalPages = pdfDocument.numPages;
-            this.updatePageNumberStates();
+            this._updatePageNumberStates();
             this.dispatchEvent(new CustomEvent('document-loaded', {
               detail: {
                 document: pdfDocument
@@ -319,17 +334,32 @@ Copyright (c) 2018 Vaadin Ltd.
           });
         }
 
-        updatePageNumberStates() {
-          this.$.previousPage.disabled = (this._currentPage == 1);
-          this.$.nextPage.disabled = (this._currentPage == this._totalPages);
+        _updatePageNumberStates() {
+          this.$.previousPage.disabled = (this.__currentPage == 1);
+          this.$.nextPage.disabled = (this.__currentPage == this.__totalPages);
+        }
+
+        _pageChange(event) {
+          let page = parseInt(this.$.currentPage.value, 10);
+          if (isNaN(page)) {
+            page = this.__viewer.currentPageNumber;
+            this.$.currentPage.value = page;
+          }
+          if (page < 1) {
+            page = 1;
+          }
+          if (page > this.__totalPages) {
+            page = this.__totalPages;
+          }
+          this.__viewer.currentPageNumber = page;
         }
 
         previousPage() {
-          this._viewer.currentPageNumber--;
+          this.__viewer.currentPageNumber--;
         }
 
         nextPage() {
-          this._viewer.currentPageNumber++;
+          this.__viewer.currentPageNumber++;
         }
       }
 
