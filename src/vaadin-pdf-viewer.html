@@ -135,12 +135,12 @@ Copyright (c) 2018 Vaadin Ltd.
              * be configured to allow loading files from other sites.
              */
             src: String,
-            /** 
+            /**
              * The viewer, which takes care of rendering content into a DOM element
              */
             __viewer: Object,
             /**
-             * A represenentation of a document that has been read in. 
+             * A represenentation of a document that has been read in.
              */
             __document: Object,
             /**
@@ -149,10 +149,10 @@ Copyright (c) 2018 Vaadin Ltd.
              */
             __title: {
               type: String,
-              value: "PDF"
+              value: 'PDF'
             },
             /**
-             * Relative filename 
+             * Relative filename
              */
             __filename: String,
             /**
@@ -170,19 +170,20 @@ Copyright (c) 2018 Vaadin Ltd.
         }
 
         _setTitle(pdfTitle, filename) {
-          if(pdfTitle && filename) {
-            this.__title = pdfTitle + " - " + filename;
+          if (pdfTitle && filename) {
+            this.__title = pdfTitle + ' - ' + filename;
           } else if (pdfTitle) {
             this.__title = pdfTitle;
           } else if (filename) {
             this.__title = filename;
           } else {
-            this.__title = "PDF";
+            this.__title = 'PDF';
           }
         }
 
         ready() {
           super.ready();
+          /* global pdfjsViewer:true */
           this.__viewer = new pdfjsViewer.PDFViewer({
             container: this.$.viewerContainer,
             textLayerMode: 2,
@@ -208,18 +209,20 @@ Copyright (c) 2018 Vaadin Ltd.
             return;
           }
           this.setFilename(src);
+          /* global pdfjsLib:true */
           this.__document = pdfjsLib.getDocument(src);
           return this.__document.promise.then((pdfDocument) => {
             // Document loaded, specifying document for the viewer.
             this.__viewer.setDocument(pdfDocument);
             this.setPdfTitleFromMetadata(pdfDocument);
             this.dispatchEvent(new CustomEvent('document-loaded', {detail: {document: pdfDocument}}));
-          }, function (exception) {
+          }, function(exception) {
             console.error(exception && exception.message);
           });
         }
 
         setFilename(src) {
+          /* global pdfjsLib:true */
           let filename = pdfjsLib.getFilenameFromUrl(src) || src;
           try {
             filename = decodeURIComponent(filename);
@@ -232,7 +235,7 @@ Copyright (c) 2018 Vaadin Ltd.
 
         setPdfTitleFromMetadata(pdfDocument) {
           const self = this;
-          pdfDocument.getMetadata().then(function (data) {
+          pdfDocument.getMetadata().then(function(data) {
             let pdfTitle;
             const metadata = data.metadata;
             if (metadata && metadata.has('dc:title')) {

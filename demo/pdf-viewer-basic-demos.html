@@ -33,10 +33,10 @@
         <vaadin-pdf-viewer src="pdf-files/example-invoice.pdf"></vaadin-pdf-viewer>
         <div id="status">Loading...</div>
         <script>
-          window.addDemoReadyListener('#pdf-viewer-basic-demos-document-loaded', function (document) {
+          window.addDemoReadyListener('#pdf-viewer-basic-demos-document-loaded', function(document) {
             var start = new Date().getTime();
             const viewer = document.querySelector('vaadin-pdf-viewer');
-            viewer.addEventListener('document-loaded', function (e) {
+            viewer.addEventListener('document-loaded', function(e) {
               document.querySelector('#status').innerHTML = 'Document loaded in ' + (new Date().getTime() -
                 start) + 'ms';
             });
