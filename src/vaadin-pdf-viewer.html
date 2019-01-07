@@ -94,7 +94,7 @@ Copyright (c) 2018 Vaadin Ltd.
       }
     </style>
     <div id="header">
-      <span id="title">{{_title}}</span>
+      <span id="title">{{__title}}</span>
     </div>
     <div id="viewerContainer">
       <div id="viewer"></div>
@@ -142,42 +142,42 @@ Copyright (c) 2018 Vaadin Ltd.
             /**
              * A represenentation of a document that has been read in. 
              */
-            _document: Object,
+            __document: Object,
             /**
              * The title for the PDF shown in the header of component. It uses both the file name and
              * the title in the PDF metadata if available.
              */
-            _title: {
+            __title: {
               type: String,
               value: "PDF"
             },
             /**
              * Relative filename 
              */
-            _filename: String,
+            __filename: String,
             /**
              * The pdf metadata title
              */
-            _pdfTitle: String
+            __pdfTitle: String
 
           };
         }
 
         static get observers() {
           return [
-            'setTitle(_pdfTitle, _filename)'
+            '_setTitle(__pdfTitle, __filename)'
           ];
         }
 
-        setTitle(_pdfTitle, _filename) {
-          if(_pdfTitle && _filename) {
-            this._title = _pdfTitle + " - " + _filename;
-          } else if (_pdfTitle) {
-            this._title = _pdfTitle;
-          } else if ( _filename) {
-            this._title = _filename;
+        _setTitle(pdfTitle, filename) {
+          if(pdfTitle && filename) {
+            this.__title = pdfTitle + " - " + filename;
+          } else if (pdfTitle) {
+            this.__title = pdfTitle;
+          } else if (filename) {
+            this.__title = filename;
           } else {
-            this._title = "PDF";
+            this.__title = "PDF";
           }
         }
 
@@ -196,7 +196,7 @@ Copyright (c) 2018 Vaadin Ltd.
 
         open(src) {
           // Is there already a document loaded?
-          if (this._document) {
+          if (this.__document) {
             // We need to close the current document
             return this.close().then(() => {
               // and start over with opening the new one
@@ -208,8 +208,8 @@ Copyright (c) 2018 Vaadin Ltd.
             return;
           }
           this.setFilename(src);
-          this._document = pdfjsLib.getDocument(src);
-          return this._document.promise.then((pdfDocument) => {
+          this.__document = pdfjsLib.getDocument(src);
+          return this.__document.promise.then((pdfDocument) => {
             // Document loaded, specifying document for the viewer.
             this._viewer.setDocument(pdfDocument);
             this.setPdfTitleFromMetadata(pdfDocument);
@@ -227,7 +227,7 @@ Copyright (c) 2018 Vaadin Ltd.
             // decodeURIComponent may throw URIError,
             // fall back to using the unprocessed url in that case
           }
-          this._filename = filename;
+          this.__filename = filename;
         }
 
         setPdfTitleFromMetadata(pdfDocument) {
@@ -248,7 +248,7 @@ Copyright (c) 2018 Vaadin Ltd.
             if (!pdfTitle && info && info['Title']) {
               pdfTitle = info['Title'];
             }
-            self._pdfTitle = pdfTitle;
+            self.__pdfTitle = pdfTitle;
           });
         }
       }
