@@ -26,11 +26,10 @@
     describe('PDF Viewer', () => {
       'use strict';
 
-      let viewer, editor;
+      let viewer;
 
       beforeEach(() => {
         viewer = fixture('default');
-        //viewer = viewer.shadowRoot.querySelector('vaadin-pdf-viewer');
       });
 
       describe('custom element definition', () => {
@@ -52,9 +51,8 @@
           expect(viewer.src).to.be.undefined;
         });
 
-        
         it('should update the "src" when set from outside', () => {
-          viewer.src = "pdf-files/example-invoice.pdf";
+          viewer.src = 'pdf-files/example-invoice.pdf';
           expect(viewer.src).to.equal('pdf-files/example-invoice.pdf');
         });
 
