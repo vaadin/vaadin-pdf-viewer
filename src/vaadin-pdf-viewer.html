@@ -138,7 +138,7 @@ Copyright (c) 2018 Vaadin Ltd.
             /** 
              * The viewer, which takes care of rendering content into a DOM element
              */
-            _viewer: Object,
+            __viewer: Object,
             /**
              * A represenentation of a document that has been read in. 
              */
@@ -183,13 +183,13 @@ Copyright (c) 2018 Vaadin Ltd.
 
         ready() {
           super.ready();
-          this._viewer = new pdfjsViewer.PDFViewer({
+          this.__viewer = new pdfjsViewer.PDFViewer({
             container: this.$.viewerContainer,
             textLayerMode: 2,
             viewer: this.$.viewer
           });
           this.$.viewerContainer.addEventListener('pagesinit', () => {
-            this._viewer.currentScaleValue = 'auto';
+            this.__viewer.currentScaleValue = 'auto';
           });
           this.open(this.src);
         }
@@ -211,7 +211,7 @@ Copyright (c) 2018 Vaadin Ltd.
           this.__document = pdfjsLib.getDocument(src);
           return this.__document.promise.then((pdfDocument) => {
             // Document loaded, specifying document for the viewer.
-            this._viewer.setDocument(pdfDocument);
+            this.__viewer.setDocument(pdfDocument);
             this.setPdfTitleFromMetadata(pdfDocument);
             this.dispatchEvent(new CustomEvent('document-loaded', {detail: {document: pdfDocument}}));
           }, function (exception) {
