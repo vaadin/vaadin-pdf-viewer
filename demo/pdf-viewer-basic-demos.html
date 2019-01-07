@@ -13,7 +13,6 @@
       </template>
     </vaadin-demo-snippet>
 
-
     <h3>Showing a Multipage PDF Inline from File System</h3>
     <vaadin-demo-snippet id="pdf-viewer-basic-demos-multi-page" when-defined="vaadin-pdf-viewer">
       <template preserve-content>
@@ -38,8 +37,8 @@
             var start = new Date().getTime();
             const viewer = document.querySelector('vaadin-pdf-viewer');
             viewer.addEventListener('document-loaded', function (e) {
-              
-              document.querySelector('#status').innerHTML = 'Document loaded in ' + (new Date().getTime() - start) + 'ms';
+              document.querySelector('#status').innerHTML = 'Document loaded in ' + (new Date().getTime() -
+                start) + 'ms';
             });
           });
         </script>
