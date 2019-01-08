@@ -45,10 +45,10 @@ Copyright (c) 2018 Vaadin Ltd.
         right: 0;
         bottom: 0;
         overflow: hidden;
-        line-height: 1.0;
+        line-height: 1;
       }
 
-      .textLayer>div {
+      .textLayer > div {
         color: transparent;
         position: absolute;
         white-space: pre;
@@ -63,24 +63,24 @@ Copyright (c) 2018 Vaadin Ltd.
       }
 
       .textLayer .highlight.begin {
-        border-radius: 4px 0px 0px 4px;
+        border-radius: 4px 0 0 4px;
       }
 
       .textLayer .highlight.end {
-        border-radius: 0px 4px 4px 0px;
+        border-radius: 0 4px 4px 0;
       }
 
       .textLayer .highlight.middle {
-        border-radius: 0px;
+        border-radius: 0;
       }
 
       .textLayer .endOfContent {
         display: block;
         position: absolute;
-        left: 0px;
+        left: 0;
         top: 100%;
-        right: 0px;
-        bottom: 0px;
+        right: 0;
+        bottom: 0;
         z-index: -1;
         cursor: default;
         -webkit-user-select: none;
@@ -90,7 +90,7 @@ Copyright (c) 2018 Vaadin Ltd.
       }
 
       .textLayer .endOfContent.active {
-        top: 0px;
+        top: 0;
       }
     </style>
     <div id="header">
