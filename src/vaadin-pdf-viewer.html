@@ -234,8 +234,7 @@ Copyright (c) 2018 Vaadin Ltd.
         }
 
         setPdfTitleFromMetadata(pdfDocument) {
-          const self = this;
-          pdfDocument.getMetadata().then(function(data) {
+          pdfDocument.getMetadata().then((data) => {
             let pdfTitle;
             const metadata = data.metadata;
             if (metadata && metadata.has('dc:title')) {
@@ -251,7 +250,7 @@ Copyright (c) 2018 Vaadin Ltd.
             if (!pdfTitle && info && info['Title']) {
               pdfTitle = info['Title'];
             }
-            self.__pdfTitle = pdfTitle;
+            this.__pdfTitle = pdfTitle;
           });
         }
       }
