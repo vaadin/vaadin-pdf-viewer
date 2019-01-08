@@ -147,8 +147,8 @@ Copyright (c) 2018 Vaadin Ltd.
       <vaadin-text-field id="currentPage" part="toolbar-current-page" value="{{__currentPage}}" on-change="__pageChange"></vaadin-text-field>
       <span id="pageSeparator" part="toolbar-text toolbar-page-separator">/</span>
       <span id="totalPages" part="toolbar-text toolbar-total-pages">{{__totalPages}}</span>
-      <button id="previousPage" part="toolbar-button toolbar-button-previous-page" on-click="previousPage"></button>
-      <button id="nextPage" part="toolbar-button toolbar-button-next-page" on-click="nextPage"></button>
+      <button id="previousPage" part="toolbar-button toolbar-button-previous-page" on-click="__previousPage"></button>
+      <button id="nextPage" part="toolbar-button toolbar-button-next-page" on-click="__nextPage"></button>
     </div>
     <div id="viewerContainer" part="viewer-container">
       <div id="viewer" part="viewer"></div>
@@ -156,7 +156,7 @@ Copyright (c) 2018 Vaadin Ltd.
   </template>
 
   <script>
-    (function () {
+    (function() {
 
       /**
        * `<vaadin-pdf-viewer>` is a Web Component for rendering PDF files without
@@ -294,7 +294,7 @@ Copyright (c) 2018 Vaadin Ltd.
                 document: pdfDocument
               }
             }));
-          }, function (exception) {
+          }, function(exception) {
             console.error(exception && exception.message);
           });
         }
@@ -352,15 +352,15 @@ Copyright (c) 2018 Vaadin Ltd.
           this.__viewer.currentPageNumber = page;
         }
 
-        _getPage(){
+        _getPage() {
           return this.__viewer.currentPageNumber;
         }
 
-        previousPage() {
+        __previousPage() {
           this.__viewer.currentPageNumber--;
         }
 
-        nextPage() {
+        __nextPage() {
           this.__viewer.currentPageNumber++;
         }
       }
