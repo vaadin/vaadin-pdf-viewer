@@ -279,13 +279,13 @@ Copyright (c) 2018 Vaadin Ltd.
             // No file given, show nothing.
             return;
           }
-          this.setFilename(src);
+          this._setFilename(src);
           /* global pdfjsLib:true */
           this.__document = pdfjsLib.getDocument(src);
           return this.__document.promise.then((pdfDocument) => {
             // Document loaded, specifying document for the viewer.
             this.__viewer.setDocument(pdfDocument);
-            this.setPdfTitleFromMetadata(pdfDocument);
+            this._setPdfTitleFromMetadata(pdfDocument);
             this.$.toolbar.classList.add('ready');
             this.__totalPages = pdfDocument.numPages;
             this._updatePageNumberStates();
@@ -299,7 +299,7 @@ Copyright (c) 2018 Vaadin Ltd.
           });
         }
 
-        setFilename(src) {
+        _setFilename(src) {
           /* global pdfjsLib:true */
           let filename = pdfjsLib.getFilenameFromUrl(src) || src;
           try {
@@ -311,7 +311,7 @@ Copyright (c) 2018 Vaadin Ltd.
           this.__filename = filename;
         }
 
-        setPdfTitleFromMetadata(pdfDocument) {
+        _setPdfTitleFromMetadata(pdfDocument) {
           pdfDocument.getMetadata().then((data) => {
             let pdfTitle;
             const metadata = data.metadata;
