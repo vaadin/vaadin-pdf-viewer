@@ -23,27 +23,24 @@
   </test-fixture>
 
   <test-fixture id="multi-page">
-      <template>
-        <vaadin-pdf-viewer src="pdf-files/bitcoin.pdf"></vaadin-pdf-viewer>
-      </template>
-    </test-fixture>
+    <template>
+      <vaadin-pdf-viewer src="pdf-files/bitcoin.pdf"></vaadin-pdf-viewer>
+    </template>
+  </test-fixture>
 
   <script>
     describe('PDF Viewer', () => {
       'use strict';
 
-      let viewer, editor;
+      let viewer;
 
-      beforeEach(() => {
-      });
+      beforeEach(() => {});
 
       describe('no document', () => {
         it('page controls should not be visible', () => {
           viewer = fixture('no-file');
           const footer = viewer.shadowRoot.querySelector('#currentPage');
           const display = getComputedStyle(footer, null).display;
-          console.log(display);
-          
           expect(display).to.be.equal('none');
         });
       });
@@ -51,14 +48,15 @@
       describe('single page', (done) => {
         it('page controls should be visible', (done) => {
           viewer = fixture('one-pager');
-          viewer.addEventListener('document-loaded', function (e) {
-            setTimeout(function () {
-              expect(getComputedStyle(viewer.shadowRoot.querySelector('#currentPage'), null).display).to.be.equal('flex');
+          viewer.addEventListener('document-loaded', function(e) {
+            setTimeout(function() {
+              expect(getComputedStyle(viewer.shadowRoot.querySelector('#currentPage'), null).display)
+                .to.be.equal('flex');
               expect(viewer.shadowRoot.querySelector('#currentPage').value).to.be.equal(1);
               expect(viewer.shadowRoot.querySelector('#totalPages').innerHTML).to.be.equal('1');
               expect(viewer.shadowRoot.querySelector('#previousPage').disabled).to.be.true;
               expect(viewer.shadowRoot.querySelector('#nextPage').disabled).to.be.true;
-              done();  
+              done();
             }, 1000);
           });
         });
@@ -67,8 +65,8 @@
       describe('multi page', (done) => {
         it('arrow buttons should work', (done) => {
           viewer = fixture('multi-page');
-          viewer.addEventListener('document-loaded', function (e) {
-            setTimeout(function () {
+          viewer.addEventListener('document-loaded', function(e) {
+            setTimeout(function() {
               const currentPage = viewer.shadowRoot.querySelector('#currentPage');
               const totalPages = viewer.shadowRoot.querySelector('#totalPages');
               const previousPage = viewer.shadowRoot.querySelector('#previousPage');
@@ -91,7 +89,7 @@
               previousPage.click();
               expect(currentPage.value).to.be.equal(1);
               expect(previousPage.disabled).to.be.true;
-              for(let i = 0;i<8;i++){
+              for (let i = 0; i < 8; i++) {
                 nextPage.click();
               }
               expect(currentPage.value).to.be.equal(9);
@@ -102,7 +100,7 @@
               expect(currentPage.value).to.be.equal(9);
               expect(nextPage.disabled).to.be.true;
 
-              done(); 
+              done();
             }, 1000);
           });
         });
