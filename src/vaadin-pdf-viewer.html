@@ -144,7 +144,7 @@ Copyright (c) 2018 Vaadin Ltd.
     <div id="toolbar" part="toolbar">
       <span id="title" part="toolbar-text toolbar-title">{{__title}}</span>
       <span id="toolbarSpacer" part="toolbar-spacer"></span>
-      <vaadin-text-field id="currentPage" part="toolbar-current-page" value="{{__currentPage}}" on-change="_pageChange"></vaadin-text-field>
+      <vaadin-text-field id="currentPage" part="toolbar-current-page" value="{{__currentPage}}" on-change="__pageChange"></vaadin-text-field>
       <span id="pageSeparator" part="toolbar-text toolbar-page-separator">/</span>
       <span id="totalPages" part="toolbar-text toolbar-total-pages">{{__totalPages}}</span>
       <button id="previousPage" part="toolbar-button toolbar-button-previous-page" on-click="previousPage"></button>
@@ -230,11 +230,11 @@ Copyright (c) 2018 Vaadin Ltd.
 
         static get observers() {
           return [
-            '_setTitle(__pdfTitle, __filename)'
+            '__setTitle(__pdfTitle, __filename)'
           ];
         }
 
-        _setTitle(pdfTitle, filename) {
+        __setTitle(pdfTitle, filename) {
           if (pdfTitle && filename) {
             this.__title = pdfTitle + ' - ' + filename;
           } else if (pdfTitle) {
@@ -259,7 +259,7 @@ Copyright (c) 2018 Vaadin Ltd.
           });
           this.$.viewerContainer.addEventListener('pagechange', (event) => {
             this.__currentPage = event.pageNumber;
-            this._updatePageNumberStates();
+            this.__updatePageNumberStates();
           });
           pdfjsLib.GlobalWorkerOptions.workerSrc =
             '../../pdfjs-dist/build/pdf.worker.min.js';
@@ -279,16 +279,16 @@ Copyright (c) 2018 Vaadin Ltd.
             // No file given, show nothing.
             return;
           }
-          this._setFilename(src);
+          this.__setFilename(src);
           /* global pdfjsLib:true */
           this.__document = pdfjsLib.getDocument(src);
           return this.__document.promise.then((pdfDocument) => {
             // Document loaded, specifying document for the viewer.
             this.__viewer.setDocument(pdfDocument);
-            this._setPdfTitleFromMetadata(pdfDocument);
+            this.__setPdfTitleFromMetadata(pdfDocument);
             this.$.toolbar.classList.add('ready');
             this.__totalPages = pdfDocument.numPages;
-            this._updatePageNumberStates();
+            this.__updatePageNumberStates();
             this.dispatchEvent(new CustomEvent('document-loaded', {
               detail: {
                 document: pdfDocument
@@ -299,7 +299,7 @@ Copyright (c) 2018 Vaadin Ltd.
           });
         }
 
-        _setFilename(src) {
+        __setFilename(src) {
           /* global pdfjsLib:true */
           let filename = pdfjsLib.getFilenameFromUrl(src) || src;
           try {
@@ -311,7 +311,7 @@ Copyright (c) 2018 Vaadin Ltd.
           this.__filename = filename;
         }
 
-        _setPdfTitleFromMetadata(pdfDocument) {
+        __setPdfTitleFromMetadata(pdfDocument) {
           pdfDocument.getMetadata().then((data) => {
             let pdfTitle;
             const metadata = data.metadata;
@@ -332,12 +332,12 @@ Copyright (c) 2018 Vaadin Ltd.
           });
         }
 
-        _updatePageNumberStates() {
+        __updatePageNumberStates() {
           this.$.previousPage.disabled = (this.__currentPage == 1);
           this.$.nextPage.disabled = (this.__currentPage == this.__totalPages);
         }
 
-        _pageChange(event) {
+        __pageChange(event) {
           let page = parseInt(this.$.currentPage.value, 10);
           if (isNaN(page)) {
             page = this.__viewer.currentPageNumber;
@@ -353,7 +353,7 @@ Copyright (c) 2018 Vaadin Ltd.
         }
 
         _getPage(){
-          return this._viewer.currentPageNumber;
+          return this.__viewer.currentPageNumber;
         }
 
         previousPage() {
