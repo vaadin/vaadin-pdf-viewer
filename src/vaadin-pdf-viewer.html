@@ -188,7 +188,10 @@ Copyright (c) 2018 Vaadin Ltd.
              * server as where the component is run, or that the server where the file is on should
              * be configured to allow loading files from other sites.
              */
-            src: String,
+            src: {
+              type: String,
+              observer: '__srcChanged'
+            },
             /**
              * The viewer, which takes care of rendering content into a DOM element
              */
@@ -296,6 +299,28 @@ Copyright (c) 2018 Vaadin Ltd.
           }, function(exception) {
             console.error(exception && exception.message);
           });
+        }
+
+        __srcChanged(newSrc) {
+          this.open(newSrc);
+        }
+
+        /**
+         * Closes opened PDF document.
+         * @returns {Promise} - Returns the promise, which is resolved when all
+         *                      destruction is completed.
+         */
+        close() {
+          if (!this.__document) {
+            return Promise.resolve();
+          }
+
+          var promise = this.__document.destroy();
+          if (this.__document) {
+            this.__document = null;
+            this.__viewer.setDocument(null);
+          }
+          return promise;
         }
 
         __setFilename(src) {
