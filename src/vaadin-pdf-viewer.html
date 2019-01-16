@@ -12,7 +12,10 @@ Copyright (c) 2018 Vaadin Ltd.
 <script src="../../pdfjs-dist/build/pdf.min.js"></script>
 <!-- pdf_viewer.js enables rendering a pdf.js -read file into DOM -->
 <script src="../../pdfjs-dist/web/pdf_viewer.js"></script>
-
+<!-- this should be loaded only if needed vie pdfjsLib.GlobalWorkerOptions.workerSrc in `ready()`,
+     but the file gets optimized away when a project using this component is built. There is
+     probably problems still with bundles, which put this file as inline. -->
+<script src="../../pdfjs-dist/build/pdf.worker.min.js"></script>
 
 <dom-module id="vaadin-pdf-viewer">
   <template>
