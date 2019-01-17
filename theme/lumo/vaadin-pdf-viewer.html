@@ -4,7 +4,10 @@
 <link rel="import" href="../../../vaadin-lumo-styles/spacing.html">
 <link rel="import" href="../../../vaadin-lumo-styles/typography.html">
 <link rel="import" href="../../../vaadin-lumo-styles/font-icons.html">
-<link rel="import" href="../../../vaadin-text-field/theme/lumo/vaadin-text-field-styles.html">
+<link rel="import" href="../../../vaadin-select/theme/lumo/vaadin-select-styles.html">
+<link rel="import" href="../../../vaadin-list-box/theme/lumo/vaadin-list-box-styles.html">
+<link rel="import" href="../../../vaadin-item/theme/lumo/vaadin-item-styles.html">
+
 
 <dom-module id="lumo-pdf-viewer" theme-for="vaadin-pdf-viewer">
   <template>
@@ -28,8 +31,12 @@
         z-index: 2;
       }
 
-      [part~="toolbar-spacer"] {
+      [part~="toolbar-pages"] {
+        display: flex;
+        flex-direction: row;
         flex: 1;
+        align-items: center;
+        justify-content: flex-end;
       }
 
       [part~="toolbar-current-page"] {
@@ -49,6 +56,7 @@
         display: inline-block;
         color: var(--lumo-contrast-80pct);
         padding: var(--lumo-space-xs) 0;
+        flex: 1;
       }
 
       [part~="toolbar-button"] {
