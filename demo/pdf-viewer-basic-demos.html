@@ -27,6 +27,16 @@
       </template>
     </vaadin-demo-snippet>
 
+    <h3>Adjust the zoom level</h3>
+    <p>There are controls for the user to set a zoom level, but you can also defined programmatically what
+    the level should be, so that you have a good default. For example, in many cases you want a one-pager
+    to be fully visible on the screen. For that <code>zoom="page-fit"</code> is an excellent choice.</p>
+    <vaadin-demo-snippet id="pdf-viewer-basic-demos-zoom" when-defined="vaadin-pdf-viewer">
+      <template preserve-content>
+        <vaadin-pdf-viewer src="pdf-files/example-invoice.pdf" zoom="page-fit"></vaadin-pdf-viewer>
+      </template>
+    </vaadin-demo-snippet>
+
     <h3>Run Code When PDF is Fully Loaded</h3>
     <vaadin-demo-snippet id="pdf-viewer-basic-demos-document-loaded" when-defined="vaadin-pdf-viewer">
       <template preserve-content>

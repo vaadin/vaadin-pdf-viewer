@@ -8,6 +8,9 @@ Copyright (c) 2018 Vaadin Ltd.
 <link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
 <link rel="import" href="../../vaadin-license-checker/vaadin-license-checker.html">
 <link rel="import" href="../../vaadin-text-field/src/vaadin-text-field.html">
+<link rel="import" href="../../vaadin-select/src/vaadin-select.html">
+<link rel="import" href="../../vaadin-item/src/vaadin-item.html">
+<link rel="import" href="../../vaadin-list-box/src/vaadin-list-box.html">
 <!-- pdf.js enables reading in PDF files and building a JS data representation of it -->
 <script src="../../pdfjs-dist/build/pdf.min.js"></script>
 <!-- pdf_viewer.js enables rendering a pdf.js -read file into DOM -->
@@ -35,7 +38,8 @@ Copyright (c) 2018 Vaadin Ltd.
       #toolbar #pageSeparator,
       #toolbar #totalPages,
       #toolbar #previousPage,
-      #toolbar #nextPage {
+      #toolbar #nextPage,
+      #toolbar [part~="toolbar-zoom"] {
         display: none;
       }
 
@@ -43,20 +47,20 @@ Copyright (c) 2018 Vaadin Ltd.
       #toolbar.ready #pageSeparator,
       #toolbar.ready #totalPages,
       #toolbar.ready #previousPage,
-      #toolbar.ready #nextPage {
+      #toolbar.ready #nextPage,
+      #toolbar.ready [part~="toolbar-zoom"] {
         display: inherit;
       }
 
       #viewerContainer {
         position: relative;
-        display: flex;
         flex: 1;
         overflow: auto;
-        justify-content: center;
       }
 
       .page {
         position: relative;
+        margin: 0px auto;
       }
 
       .textLayer {
@@ -128,30 +132,35 @@ Copyright (c) 2018 Vaadin Ltd.
         flex: 1;
       }
 
-      #header #currentPage,
-      #header #pageSeparator,
-      #header #totalPages,
-      #header #previousPage,
-      #header #nextPage {
-        display: none;
-      }
 
-      #header.ready #currentPage,
-      #header.ready #pageSeparator,
-      #header.ready #totalPages,
-      #header.ready #previousPage,
-      #header.ready #nextPage {
-        display: inherit;
-      }
     </style>
     <div id="toolbar" part="toolbar">
       <span id="title" part="toolbar-text toolbar-title">{{__title}}</span>
-      <span id="toolbarSpacer" part="toolbar-spacer"></span>
-      <vaadin-text-field id="currentPage" part="toolbar-current-page" value="{{__currentPage}}" on-change="__pageChange"></vaadin-text-field>
-      <span id="pageSeparator" part="toolbar-text toolbar-page-separator">/</span>
-      <span id="totalPages" part="toolbar-text toolbar-total-pages">{{__totalPages}}</span>
-      <button id="previousPage" part="toolbar-button toolbar-button-previous-page" on-click="__previousPage"></button>
-      <button id="nextPage" part="toolbar-button toolbar-button-next-page" on-click="__nextPage"></button>
+      <vaadin-select id="zoom" part="toolbar-zoom" value="Automatic zoom"  on-value-changed="__internalZoomChanged">
+        <template>
+          <vaadin-list-box>
+            <vaadin-item>Automatic zoom</vaadin-item>
+            <vaadin-item>Actual size</vaadin-item>
+            <vaadin-item>Page fit</vaadin-item>
+            <vaadin-item>Page width</vaadin-item>
+            <vaadin-item>50%</vaadin-item>
+            <vaadin-item >75%</vaadin-item>
+            <vaadin-item>100%</vaadin-item>
+            <vaadin-item>125%</vaadin-item>
+            <vaadin-item>150%</vaadin-item>
+            <vaadin-item>200%</vaadin-item>
+            <vaadin-item>300%</vaadin-item>
+            <vaadin-item>400%</vaadin-item>
+          </vaadin-list-box>
+        </template>
+      </vaadin-select>
+      <div part="toolbar-pages">
+        <vaadin-text-field id="currentPage" part="toolbar-current-page" value="{{__currentPage}}" on-change="__pageChange"></vaadin-text-field>
+        <span id="pageSeparator" part="toolbar-text toolbar-page-separator">/</span>
+        <span id="totalPages" part="toolbar-text toolbar-total-pages">{{__totalPages}}</span>
+        <button id="previousPage" part="toolbar-button toolbar-button-previous-page" on-click="__previousPage"></button>
+        <button id="nextPage" part="toolbar-button toolbar-button-next-page" on-click="__nextPage"></button>
+      </div>
     </div>
     <div id="viewerContainer" part="viewer-container">
       <div id="viewer" part="viewer"></div>
@@ -219,6 +228,19 @@ Copyright (c) 2018 Vaadin Ltd.
              * The pdf metadata title
              */
             __pdfTitle: String,
+            /** 
+             * The level of zoom on the document.
+             * Allowed values are
+             *  - Number, for zoom percentage. Eg. 1.5 means 150% zoom
+             *  - 'auto', default value
+             *  - 'page-fit'
+             *  - 'page-width'
+             */
+            zoom: {
+              type: String,
+              value: 'auto',
+              observer: '__zoomChanged'
+            },
             /**
              * The current page visible viewed right now
              */
@@ -229,7 +251,11 @@ Copyright (c) 2018 Vaadin Ltd.
             /**
              * Total amount of pages in an opened document
              */
-            __totalPages: Number
+            __totalPages: Number,
+            __loading: {
+              type: Boolean,
+              value: true
+            },
 
           };
         }
@@ -261,7 +287,17 @@ Copyright (c) 2018 Vaadin Ltd.
             viewer: this.$.viewer
           });
           this.$.viewerContainer.addEventListener('pagesinit', () => {
-            this.__viewer.currentScaleValue = 'auto';
+            this.__viewer.currentScaleValue = this.zoom;
+            let newSelectValue = 'Automatic zoom';
+            if(this.zoom == 'page-actual'){ newSelectValue = "Actual size"; }
+            if(this.zoom == 'page-fit'){ newSelectValue = "Page fit"; }
+            if(this.zoom == 'page-width'){ newSelectValue = "Page width"; }
+            if(this.zoom == 'page-actual'){ newSelectValue = "Actual size"; }
+            if(typeof this.zoom == 'number'){
+              newSelectValue = (this.zoom*100) + "%";
+            }
+            this.$.zoom.value = newSelectValue;
+            this.__loading = false;
           });
           this.$.viewerContainer.addEventListener('pagechange', (event) => {
             this.__currentPage = event.pageNumber;
@@ -361,6 +397,33 @@ Copyright (c) 2018 Vaadin Ltd.
         __updatePageNumberStates() {
           this.$.previousPage.disabled = (this.__currentPage == 1);
           this.$.nextPage.disabled = (this.__currentPage == this.__totalPages);
+        }
+
+        __internalZoomChanged(event) {
+          if(this.__loading){
+            return;
+          }
+          const zoomValues = [];
+          zoomValues['Automatic zoom'] = 'auto';
+          zoomValues['Actual size'] = 'page-actual';
+          zoomValues['Page fit'] = 'page-fit';
+          zoomValues['Page width'] = 'page-width';
+          zoomValues['50%'] = 0.5;
+          zoomValues['75%'] = 0.75;
+          zoomValues['100%'] = 1;
+          zoomValues['125%'] = 1.25;
+          zoomValues['150%'] = 1.5;
+          zoomValues['200%'] = 2;
+          zoomValues['300%'] = 3;
+          zoomValues['400%'] = 4;
+          this.zoom = zoomValues[event.detail.value];
+        }
+
+        __zoomChanged(value) {
+          if(!this.__viewer || this.__loading){
+            return;
+          }
+          this.__viewer.currentScaleValue = value;
         }
 
         __pageChange(event) {

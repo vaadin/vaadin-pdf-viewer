@@ -1,6 +1,9 @@
 <link rel="import" href="../../src/vaadin-pdf-viewer.html">
 <link rel="import" href="../../../vaadin-material-styles/color.html">
 <link rel="import" href="../../../vaadin-text-field/theme/material/vaadin-text-field-styles.html">
+<link rel="import" href="../../../vaadin-select/theme/material/vaadin-select-styles.html">
+<link rel="import" href="../../../vaadin-list-box/theme/material/vaadin-list-box-styles.html">
+<link rel="import" href="../../../vaadin-item/theme/material/vaadin-item-styles.html">
 
 <dom-module id="material-pdf-viewer" theme-for="vaadin-pdf-viewer">
   <template>
@@ -19,8 +22,12 @@
         z-index: 2;
       }
 
-      [part~="toolbar-spacer"] {
+      [part~="toolbar-pages"] {
+        display: flex;
+        flex-direction: row;
         flex: 1;
+        align-items: center;
+        justify-content: flex-end;
       }
 
       [part~="toolbar-current-page"] {
@@ -39,6 +46,7 @@
         line-height: 2.25rem;
         display: inline-block;
         padding: 4px 0;
+        flex: 1;
       }
 
       [part~="toolbar-button"] {
