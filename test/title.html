@@ -54,14 +54,8 @@
           viewer = fixture('with-pdf-with-metadata-title');
           viewer.addEventListener('document-loaded', function(e) {
             const title = viewer.shadowRoot.querySelector('#title');
-            // The title update doesn't seem to happen syncronously, even if the
-            // property is updated before the expect() is run, so this required
-            // and extra small timeout
-            setTimeout(function() {
-              expect(title.innerHTML).to.be.equal('2018-04-05 Vaadin Insights.key - vaadin.pdf');
+            expect(title.innerHTML).to.be.equal('2018-04-05 Vaadin Insights.key - vaadin.pdf');
               done();
-            }, 1000);
-
           });
           const title = viewer.shadowRoot.querySelector('#title');
           expect(title.innerHTML).to.be.equal('vaadin.pdf');

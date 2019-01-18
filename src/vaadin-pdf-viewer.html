@@ -313,16 +313,18 @@ Copyright (c) 2018 Vaadin Ltd.
           return this.__document.promise.then((pdfDocument) => {
             // Document loaded, specifying document for the viewer.
             this.__viewer.setDocument(pdfDocument);
-            this.__setPdfTitleFromMetadata(pdfDocument);
+
             this.$.toolbar.classList.add('ready');
             this.__totalPages = pdfDocument.numPages;
             this.__updatePageNumberStates();
-            this.dispatchEvent(new CustomEvent('document-loaded', {
-              detail: {
-                document: pdfDocument
-              }
-            }));
-          }, function(exception) {
+            this.__setPdfTitleFromMetadata(pdfDocument).then(() => {
+              this.dispatchEvent(new CustomEvent('document-loaded', {
+                detail: {
+                  document: pdfDocument
+                }
+              }));
+            });
+          }, function (exception) {
             console.error(exception && exception.message);
           });
         }
@@ -362,7 +364,7 @@ Copyright (c) 2018 Vaadin Ltd.
         }
 
         __setPdfTitleFromMetadata(pdfDocument) {
-          pdfDocument.getMetadata().then((data) => {
+          return pdfDocument.getMetadata().then((data) => {
             let pdfTitle;
             const metadata = data.metadata;
             if (metadata && metadata.has('dc:title')) {
