@@ -294,13 +294,13 @@ Copyright (c) 2018 Vaadin Ltd.
           pdfjsLib.GlobalWorkerOptions.workerSrc = Polymer.ResolveUrl.resolveUrl("../../pdfjs-dist/build/pdf.worker.min.js", PdfViewerElement.importPath);
         }
 
-        open(src) {
+        __open(src) {
           // Is there already a document loaded?
           if (this.__document) {
             // We need to close the current document
-            return this.close().then(() => {
+            return this.__close().then(() => {
               // and start over with opening the new one
-              return this.open(src);
+              return this.__open(src);
             });
           }
           if (!src) {
@@ -328,7 +328,7 @@ Copyright (c) 2018 Vaadin Ltd.
         }
 
         __srcChanged(newSrc) {
-          this.open(newSrc);
+          this.__open(newSrc);
         }
 
         /**
@@ -336,7 +336,7 @@ Copyright (c) 2018 Vaadin Ltd.
          * @returns {Promise} - Returns the promise, which is resolved when all
          *                      destruction is completed.
          */
-        close() {
+        __close() {
           if (!this.__document) {
             return Promise.resolve();
           }
