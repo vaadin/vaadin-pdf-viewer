@@ -60,7 +60,7 @@ Copyright (c) 2018 Vaadin Ltd.
 
       .page {
         position: relative;
-        margin: 0px auto;
+        margin: 0 auto;
       }
 
       .textLayer {
@@ -131,8 +131,6 @@ Copyright (c) 2018 Vaadin Ltd.
       #headerSpacer {
         flex: 1;
       }
-
-
     </style>
     <div id="toolbar" part="toolbar">
       <span id="title" part="toolbar-text toolbar-title">{{__title}}</span>
@@ -226,7 +224,7 @@ Copyright (c) 2018 Vaadin Ltd.
              * The pdf metadata title
              */
             __pdfTitle: String,
-            /** 
+            /**
              * The level of zoom on the document.
              * Allowed values are
              *  - Number, for zoom percentage. Eg. 1.5 means 150% zoom
@@ -291,7 +289,8 @@ Copyright (c) 2018 Vaadin Ltd.
             this.__currentPage = event.pageNumber;
             this.__updatePageNumberStates();
           });
-          pdfjsLib.GlobalWorkerOptions.workerSrc = Polymer.ResolveUrl.resolveUrl("../../pdfjs-dist/build/pdf.worker.min.js", PdfViewerElement.importPath);
+          pdfjsLib.GlobalWorkerOptions.workerSrc = Polymer.ResolveUrl.resolveUrl(
+            '../../pdfjs-dist/build/pdf.worker.min.js', PdfViewerElement.importPath);
         }
 
         __open(src) {
@@ -324,7 +323,7 @@ Copyright (c) 2018 Vaadin Ltd.
                 }
               }));
             });
-          }, function (exception) {
+          }, function(exception) {
             console.error(exception && exception.message);
           });
         }
@@ -390,8 +389,7 @@ Copyright (c) 2018 Vaadin Ltd.
         }
 
         __zoomChanged(value) {
-          console.log(value);
-          if(!this.__viewer || this.__loading){
+          if (!this.__viewer || this.__loading) {
             return;
           }
           this.__viewer.currentScaleValue = value;

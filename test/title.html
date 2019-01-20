@@ -34,8 +34,7 @@
 
       let viewer;
 
-      beforeEach(() => {
-      });
+      beforeEach(() => {});
 
       describe('test title rendering', () => {
         it('should read PDF when there is no file', () => {
@@ -55,7 +54,7 @@
           viewer.addEventListener('document-loaded', function(e) {
             const title = viewer.shadowRoot.querySelector('#title');
             expect(title.innerHTML).to.be.equal('2018-04-05 Vaadin Insights.key - vaadin.pdf');
-              done();
+            done();
           });
           const title = viewer.shadowRoot.querySelector('#title');
           expect(title.innerHTML).to.be.equal('vaadin.pdf');
