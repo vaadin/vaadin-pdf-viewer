@@ -337,6 +337,7 @@ Copyright (c) 2018 Vaadin Ltd.
 
             this.$.toolbar.classList.add('ready');
             this.__totalPages = pdfDocument.numPages;
+            this.__currentPage = 1;
             this.__updatePageNumberStates();
             this.__setPdfTitleFromMetadata(pdfDocument).then(() => {
               this.dispatchEvent(new CustomEvent('document-loaded', {
