@@ -8,10 +8,14 @@
 <dom-module id="material-pdf-viewer" theme-for="vaadin-pdf-viewer">
   <template>
     <style>
-      #viewerContainer {
+      [part~="viewer-container"] {
         background-color: var(--material-secondary-background-color);
         border: 1px solid rgba(0, 0, 0, 0.12);
-        border-radius: 3px;
+        outline: none;
+      }
+
+      [part~="viewer-container"][focus-ring] {
+        box-shadow: 0 0 0 2px var(--material-primary-color);
       }
 
       [part~="toolbar"] {

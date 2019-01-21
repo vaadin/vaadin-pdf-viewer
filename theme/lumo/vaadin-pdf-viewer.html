@@ -18,8 +18,13 @@
         border-radius: var(--lumo-border-radius);
       }
 
-      #viewerContainer {
+      [part~="viewer-container"] {
         background-color: var(--lumo-contrast-5pct);
+        outline: none;
+      }
+
+      [part~="viewer-container"][focus-ring] {
+        box-shadow: 0 0 0 2px var(--lumo-primary-color-50pct);
       }
 
       [part~="toolbar"] {

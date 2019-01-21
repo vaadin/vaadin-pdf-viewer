@@ -158,7 +158,7 @@ Copyright (c) 2018 Vaadin Ltd.
         <button id="nextPage" part="toolbar-button toolbar-button-next-page" on-click="__nextPage"></button>
       </div>
     </div>
-    <div id="viewerContainer" part="viewer-container">
+    <div id="viewerContainer" part="viewer-container" tabindex="0">
       <div id="viewer" part="viewer"></div>
     </div>
   </template>
@@ -275,6 +275,16 @@ Copyright (c) 2018 Vaadin Ltd.
 
         ready() {
           super.ready();
+          this.$.viewerContainer.addEventListener('focus', e => this.__setFocused(true), true);
+          this.$.viewerContainer.addEventListener('blur', e => this.__setFocused(false), true);
+          this.$.viewerContainer.addEventListener('mousedown', e => {
+            this._mousedown = true;
+            const mouseUpListener = () => {
+              this._mousedown = false;
+              document.removeEventListener('mouseup', mouseUpListener);
+            };
+            document.addEventListener('mouseup', mouseUpListener);
+          });
           /* global pdfjsViewer:true */
           this.__viewer = new pdfjsViewer.PDFViewer({
             container: this.$.viewerContainer,
@@ -291,6 +301,18 @@ Copyright (c) 2018 Vaadin Ltd.
           });
           pdfjsLib.GlobalWorkerOptions.workerSrc = Polymer.ResolveUrl.resolveUrl(
             '../../pdfjs-dist/build/pdf.worker.min.js', PdfViewerElement.importPath);
+        }
+
+        __setFocused(focused) {
+          if (focused) {
+            this.$.viewerContainer.setAttribute('focused', '');
+            if (!this._mousedown) {
+              this.$.viewerContainer.setAttribute('focus-ring', '');
+            }
+          } else {
+            this.$.viewerContainer.removeAttribute('focused');
+            this.$.viewerContainer.removeAttribute('focus-ring');
+          }
         }
 
         __open(src) {
