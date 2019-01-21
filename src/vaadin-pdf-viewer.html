@@ -7,7 +7,7 @@ Copyright (c) 2018 Vaadin Ltd.
 <link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
 <link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
 <link rel="import" href="../../vaadin-license-checker/vaadin-license-checker.html">
-<link rel="import" href="../../vaadin-text-field/src/vaadin-text-field.html">
+<link rel="import" href="../../vaadin-text-field/src/vaadin-number-field.html">
 <link rel="import" href="../../vaadin-select/src/vaadin-select.html">
 <link rel="import" href="../../vaadin-item/src/vaadin-item.html">
 <link rel="import" href="../../vaadin-list-box/src/vaadin-list-box.html">
@@ -151,7 +151,7 @@ Copyright (c) 2018 Vaadin Ltd.
         </template>
       </vaadin-select>
       <div part="toolbar-pages">
-        <vaadin-text-field id="currentPage" part="toolbar-current-page" value="{{__currentPage}}" on-change="__pageChange"></vaadin-text-field>
+        <vaadin-number-field id="currentPage" part="toolbar-current-page" value="{{__currentPage}}" on-change="__pageChange" min="1" max="{{__totalPages}}"></vaadin-number-field>
         <span id="pageSeparator" part="toolbar-text toolbar-page-separator">/</span>
         <span id="totalPages" part="toolbar-text toolbar-total-pages">{{__totalPages}}</span>
         <button id="previousPage" part="toolbar-button toolbar-button-previous-page" on-click="__previousPage"></button>
