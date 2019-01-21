@@ -360,6 +360,8 @@ Copyright (c) 2018 Vaadin Ltd.
          *                      destruction is completed.
          */
         __close() {
+          this.$.toolbar.classList.remove('ready');
+          this.__filename = 'PDF';
           if (!this.__document) {
             return Promise.resolve();
           }
