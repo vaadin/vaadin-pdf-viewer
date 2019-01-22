@@ -17,6 +17,7 @@
         border: 1px solid var(--lumo-contrast-10pct);
         border-radius: var(--lumo-border-radius);
         font-family: var(--lumo-font-family);
+        position: relative;
       }
 
       [part~="viewer-container"] {
@@ -63,6 +64,9 @@
         color: var(--lumo-contrast-80pct);
         padding: var(--lumo-space-xs) 0;
         flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       [part~="toolbar-button"] {
@@ -139,6 +143,20 @@
 
       .textLayer .highlight.selected {
         background-color: rgb(0, 100, 0);
+      }
+
+      [part~="toolbar"].small-size [part~="toolbar-pages"] {
+        flex: none;
+      }
+
+      [part~="toolbar"].small-size [part~="toolbar-zoom"] {
+        position: absolute;
+        bottom: var(--lumo-space-s);
+        left: 50%;
+        margin-left: -100px;
+        background-color: white;
+        box-shadow: var(--lumo-box-shadow-m);
+        padding: var(--lumo-space-xs);
       }
     </style>
   </template>

@@ -1,5 +1,6 @@
 <link rel="import" href="../../src/vaadin-pdf-viewer.html">
 <link rel="import" href="../../../vaadin-material-styles/color.html">
+<link rel="import" href="../../../vaadin-material-styles/typography.html">
 <link rel="import" href="../../../vaadin-text-field/theme/material/vaadin-text-field-styles.html">
 <link rel="import" href="../../../vaadin-select/theme/material/vaadin-select-styles.html">
 <link rel="import" href="../../../vaadin-list-box/theme/material/vaadin-list-box-styles.html">
@@ -8,6 +9,11 @@
 <dom-module id="material-pdf-viewer" theme-for="vaadin-pdf-viewer">
   <template>
     <style>
+      :host {
+        font-family: var(--material-font-family);
+        position: relative;
+      }
+
       [part~="viewer-container"] {
         background-color: var(--material-secondary-background-color);
         border: 1px solid rgba(0, 0, 0, 0.12);
@@ -51,6 +57,9 @@
         display: inline-block;
         padding: 4px 0;
         flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       [part~="toolbar-button"] {
@@ -90,6 +99,20 @@
 
       .page:last-child {
         padding-bottom: 8px;
+      }
+
+      [part~="toolbar"].small-size [part~="toolbar-pages"] {
+        flex: none;
+      }
+
+      [part~="toolbar"].small-size [part~="toolbar-zoom"] {
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        margin-left: -100px;
+        background-color: white;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        padding: 0 4px;
       }
     </style>
   </template>
