@@ -124,6 +124,7 @@ We are using [ESLint](http://eslint.org/) for linting JavaScript code. You can c
 
 Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs](https://saucelabs.com).
 
+This component uses Mozilla's [PDF.js](https://github.com/mozilla/pdf.js).
 
 ## Contributing
 
