@@ -35,7 +35,9 @@
     "vaadin-license-checker": "^2.1.0",
     "pdfjs-dist": "^2.0.943",
     "vaadin-text-field": "^2.3.0-alpha7",
-    "vaadin-select": "^2.0.2"
+    "vaadin-select": "^2.0.2",
+    "vaadin-item": "^2.1.0",
+    "vaadin-list-box": "^1.1.0"
   },
   "devDependencies": {
     "iron-component-page": "^3.0.0",
