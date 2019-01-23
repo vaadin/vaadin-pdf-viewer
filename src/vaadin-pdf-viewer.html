@@ -16,10 +16,6 @@ Copyright (c) 2018 Vaadin Ltd.
 <script src="../../pdfjs-dist/build/pdf.min.js"></script>
 <!-- pdf_viewer.js enables rendering a pdf.js -read file into DOM -->
 <script src="../../pdfjs-dist/web/pdf_viewer.js"></script>
-<!-- this should be loaded only if needed vie pdfjsLib.GlobalWorkerOptions.workerSrc in `ready()`,
-     but the file gets optimized away when a project using this component is built. There is
-     probably problems still with bundles, which put this file as inline. -->
-<script src="../../pdfjs-dist/build/pdf.worker.min.js"></script>
 
 <dom-module id="vaadin-pdf-viewer">
   <template>
@@ -148,7 +144,8 @@ Copyright (c) 2018 Vaadin Ltd.
         </template>
       </vaadin-select>
       <div part="toolbar-pages">
-        <vaadin-number-field id="currentPage" part="toolbar-current-page" value="{{__currentPage}}" on-change="__pageChange" min="1" max="{{__totalPages}}"></vaadin-number-field>
+        <vaadin-number-field id="currentPage" part="toolbar-current-page" value="{{__currentPage}}" on-change="__pageChange"
+        min="1" max="{{__totalPages}}"></vaadin-number-field>
         <span id="pageSeparator" part="toolbar-text toolbar-page-separator">/</span>
         <span id="totalPages" part="toolbar-text toolbar-total-pages">{{__totalPages}}</span>
         <button id="previousPage" part="toolbar-button toolbar-button-previous-page" on-click="__previousPage"></button>
@@ -201,6 +198,21 @@ Copyright (c) 2018 Vaadin Ltd.
               type: String,
               observer: '__srcChanged'
             },
+
+            /**
+             * The component needs pdf.worker.js sometimes, depending on the PDF being loaded. It is
+             * loaded lazily by telling the component where it is and it takes care of loading the file
+             *  if needed. By default, it is loaded from a CDN,
+             * '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.worker.min.js'. If you don't have
+             * internet access or don't want to rely on a server, you can download the file and deploy
+             * it within your app. When you have it available on runtime, update `worker` to point to
+             * the url for the file.
+             */
+            worker: {
+              type: String,
+              observer: '__workerChanged',
+              value: '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.worker.min.js'
+            },
             /**
              * The viewer, which takes care of rendering content into a DOM element
              */
@@ -252,7 +264,6 @@ Copyright (c) 2018 Vaadin Ltd.
               type: Boolean,
               value: true
             },
-
           };
         }
 
@@ -300,8 +311,7 @@ Copyright (c) 2018 Vaadin Ltd.
             this.__currentPage = event.pageNumber;
             this.__updatePageNumberStates();
           });
-          pdfjsLib.GlobalWorkerOptions.workerSrc = Polymer.ResolveUrl.resolveUrl(
-            '../../pdfjs-dist/build/pdf.worker.min.js', PdfViewerElement.importPath);
+          pdfjsLib.GlobalWorkerOptions.workerSrc = Polymer.ResolveUrl.resolveUrl(this.worker, PdfViewerElement.importPath);
 
           this.addEventListener('iron-resize', this.__recalcuateSizes);
           this.__recalcuateSizes();
@@ -368,6 +378,12 @@ Copyright (c) 2018 Vaadin Ltd.
           this.__open(newSrc);
         }
 
+        __workerChanged() {
+          if (pdfjsLib) {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = Polymer.ResolveUrl.resolveUrl(this.worker, PdfViewerElement.importPath);
+          }
+        }
+
         /**
          * Closes opened PDF document.
          * @returns {Promise} - Returns the promise, which is resolved when all
@@ -430,6 +446,13 @@ Copyright (c) 2018 Vaadin Ltd.
           if (!this.__viewer || this.__loading) {
             return;
           }
+          // This logs error 'TextLayerBuilder._bindEvents: `this.cancel()` should have
+          // been called when the page was reset, or rendering cancelled.'
+          //
+          // There is a problem deep inside pdfjs viewer that causes an console.error()
+          // to be logged, but the component still works. It seems to be due to
+          // webcomponents/shadow dom messing with
+          // TODO: Fix the issue so that we get rid of the error in log
           this.__viewer.currentScaleValue = value;
         }
 

@@ -29,8 +29,8 @@
 
     <h3>Adjust the zoom level</h3>
     <p>There are controls for the user to set a zoom level, but you can also defined programmatically what
-    the level should be, so that you have a good default. For example, in many cases you want a one-pager
-    to be fully visible on the screen. For that <code>zoom="page-fit"</code> is an excellent choice.</p>
+      the level should be, so that you have a good default. For example, in many cases you want a one-pager
+      to be fully visible on the screen. For that <code>zoom="page-fit"</code> is an excellent choice.</p>
     <vaadin-demo-snippet id="pdf-viewer-basic-demos-zoom" when-defined="vaadin-pdf-viewer">
       <template preserve-content>
         <vaadin-pdf-viewer src="pdf-files/example-invoice.pdf" zoom="page-fit"></vaadin-pdf-viewer>
@@ -52,6 +52,20 @@
             });
           });
         </script>
+      </template>
+    </vaadin-demo-snippet>
+
+    <h3>Self-deployed worker</h3>
+    <p>The component needs pdf.worker.js sometimes, depending on the PDF being loaded. It is
+      loaded lazily by telling the component where it is and it takes care of loading the file
+      if needed. By default, it is loaded from a CDN,
+      '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.worker.min.js'. If you don't have
+      internet access or don't want to rely on a server, you can download the file and deploy
+      it within your app. When you have it available on runtime, update `worker` to point to
+      the url for the file.</p>
+    <vaadin-demo-snippet id="pdf-viewer-basic-demos-document-loaded" when-defined="vaadin-pdf-viewer">
+      <template preserve-content>
+        <vaadin-pdf-viewer src="pdf-files/bitcoin.pdf" worker="../../pdfjs-dist/build/pdf.worker.min.js"></vaadin-pdf-viewer>
       </template>
     </vaadin-demo-snippet>
   </template>
