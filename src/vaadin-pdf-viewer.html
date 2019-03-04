@@ -160,6 +160,10 @@ Copyright (c) 2018 Vaadin Ltd.
 
   <script>
     (function() {
+      /* MAGI REMOVE START */
+      const pdfjsLib = window.pdfjsLib;
+      const pdfjsViewer = window.pdfjsViewer;
+      /* MAGI REMOVE END */
 
       /**
        * `<vaadin-pdf-viewer>` is a Web Component for rendering PDF files without
@@ -298,7 +302,6 @@ Copyright (c) 2018 Vaadin Ltd.
             };
             document.addEventListener('mouseup', mouseUpListener);
           });
-          /* global pdfjsViewer:true */
           this.__viewer = new pdfjsViewer.PDFViewer({
             container: this.$.viewerContainer,
             textLayerMode: 2,
@@ -312,7 +315,6 @@ Copyright (c) 2018 Vaadin Ltd.
             this.__currentPage = event.pageNumber;
             this.__updatePageNumberStates();
           });
-          pdfjsLib.GlobalWorkerOptions.workerSrc = Polymer.ResolveUrl.resolveUrl(this.worker, PdfViewerElement.importPath);
 
           this.addEventListener('iron-resize', this.__recalcuateSizes);
           this.__recalcuateSizes();
@@ -353,7 +355,6 @@ Copyright (c) 2018 Vaadin Ltd.
             return;
           }
           this.__setFilename(src);
-          /* global pdfjsLib:true */
           this.__document = pdfjsLib.getDocument(src);
           return this.__document.promise.then((pdfDocument) => {
             // Document loaded, specifying document for the viewer.
@@ -406,7 +407,6 @@ Copyright (c) 2018 Vaadin Ltd.
         }
 
         __setFilename(src) {
-          /* global pdfjsLib:true */
           let filename = pdfjsLib.getFilenameFromUrl(src) || src;
           try {
             filename = decodeURIComponent(filename);

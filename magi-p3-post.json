@@ -1,0 +1,11 @@
+{
+  "files": ["src/vaadin-pdf-viewer.js"],
+  "from": [
+    "import '@bundled-es-modules/pdfjs-dist/build/pdf.min.js';",
+    "import '@bundled-es-modules/pdfjs-dist/web/pdf_viewer.js';"
+  ],
+  "to": [
+    "import pdfjsLib from '@bundled-es-modules/pdfjs-dist/build/pdf.js';",
+    "import pdfjsViewer from '@bundled-es-modules/pdfjs-dist/web/pdf_viewer.js';"
+  ]
+}
