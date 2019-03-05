@@ -12,8 +12,17 @@
 
 <body>
 
-  <span id="default-tests">
+  <div id="pdf-viewer-small" style="width: 400px;">
     <vaadin-pdf-viewer src="../pdf-files/example-invoice.pdf"></vaadin-pdf-viewer>
-  </span>
+  </div>
 
+  <script>
+    window.addEventListener('WebComponentsReady', function() {
+      var viewer = document.querySelector('vaadin-pdf-viewer');
+
+      Polymer.RenderStatus.afterNextRender(viewer, () => {
+        window.webComponentsAreReady = true;
+      });
+    });
+  </script>
 </body>

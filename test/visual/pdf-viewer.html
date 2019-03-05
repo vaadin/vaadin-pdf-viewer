@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script>
+    const theme = window.location.search.replace(/.*theme=(\w+).*/, '$1') || 'lumo';
+    document.write('<link rel="import" href="../../theme/' + theme + '/vaadin-pdf-viewer.html">');
+  </script>
+</head>
+
+<body>
+
+  <div id="pdf-viewer" style="width: 600px;">
+    <vaadin-pdf-viewer src="../pdf-files/example-invoice.pdf"></vaadin-pdf-viewer>
+  </div>
+
+  <script>
+    window.addEventListener('WebComponentsReady', function() {
+      var viewer = document.querySelector('vaadin-pdf-viewer');
+
+      Polymer.RenderStatus.afterNextRender(viewer, () => {
+        window.webComponentsAreReady = true;
+      });
+    });
+  </script>
+</body>
