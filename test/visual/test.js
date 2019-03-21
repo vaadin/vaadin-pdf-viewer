@@ -20,14 +20,14 @@ gemini.suite('vaadin-pdf-viewer', function(rootSuite) {
   ['lumo', 'material'].forEach(theme => {
     gemini.suite(`pdf-viewer-${theme}`, function(suite) {
       suite
-        .setUrl(`/pdf-viewer.html?theme=${theme}`)
+        .setUrl(`pdf-viewer.html?theme=${theme}`)
         .setCaptureElements('#pdf-viewer')
         .capture(`vaadin-pdf-viewer`);
     });
 
     gemini.suite(`pdf-viewer-small-${theme}`, function(suite) {
       suite
-        .setUrl(`/pdf-viewer-small.html?theme=${theme}`)
+        .setUrl(`pdf-viewer-small.html?theme=${theme}`)
         .setCaptureElements('#pdf-viewer-small')
         .capture(`vaadin-pdf-viewer`);
     });

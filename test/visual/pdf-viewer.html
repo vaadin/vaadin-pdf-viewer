@@ -20,8 +20,12 @@
     window.addEventListener('WebComponentsReady', function() {
       var viewer = document.querySelector('vaadin-pdf-viewer');
 
-      Polymer.RenderStatus.afterNextRender(viewer, () => {
-        window.webComponentsAreReady = true;
+      // TODO(platosha): dispatch an event after initial PDF document rendering
+      // https://github.com/vaadin/vaadin-pdf-viewer/issues/25
+      viewer.__viewer.eventBus.on('pagesinit', () => {
+        viewer.__viewer.onePageRendered.then(() => {
+          window.webComponentsAreReady = true;
+        });
       });
     });
   </script>
