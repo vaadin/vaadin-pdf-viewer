@@ -70,7 +70,7 @@ Copyright (c) 2018 Vaadin Ltd.
         line-height: 1;
       }
 
-      .textLayer > div {
+      .textLayer > span {
         color: transparent;
         position: absolute;
         white-space: pre;
@@ -209,7 +209,7 @@ Copyright (c) 2018 Vaadin Ltd.
              * The component needs pdf.worker.js sometimes, depending on the PDF being loaded. It is
              * loaded lazily by telling the component where it is and it takes care of loading the file
              *  if needed. By default, it is loaded from a CDN,
-             * '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.worker.min.js'. If you don't have
+             * '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.1.266/pdf.worker.min.js'. If you don't have
              * internet access or don't want to rely on a server, you can download the file and deploy
              * it within your app. When you have it available on runtime, update `worker` to point to
              * the url for the file.
@@ -217,7 +217,7 @@ Copyright (c) 2018 Vaadin Ltd.
             worker: {
               type: String,
               observer: '__workerChanged',
-              value: '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.worker.min.js'
+              value: '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.1.266/pdf.worker.min.js'
             },
             /**
              * The viewer, which takes care of rendering content into a DOM element
@@ -308,11 +308,11 @@ Copyright (c) 2018 Vaadin Ltd.
             textLayerMode: 2,
             viewer: this.$.viewer
           });
-          this.$.viewerContainer.addEventListener('pagesinit', () => {
+          this.__viewer.eventBus.on('pagesinit', () => {
             this.__viewer.currentScaleValue = this.zoom;
             this.__loading = false;
           });
-          this.$.viewerContainer.addEventListener('pagechange', (event) => {
+          this.__viewer.eventBus.on('pagechanging', (event) => {
             this.__currentPage = event.pageNumber;
             this.__updatePageNumberStates();
           });
