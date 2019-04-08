@@ -2,9 +2,12 @@
 
 [&lt;vaadin-pdf-viewer&gt;](https://vaadin.com/components/vaadin-pdf-viewer) is a Web Component providing &lt;element-functionality&gt;, part of the [Vaadin components](https://vaadin.com/components).
 
-[Live Demo ↗](https://vaadin.com/components/vaadin-pdf-viewer/html-examples)
+> ## 🛠 Status: Alpha
+> This component is not considered production ready. Especially, IE11 compatibility is missing.
+
+[Live Demo ↗](https://cdn.vaadin.com/vaadin-pdf-viewer/1.0.0-alpha11/demo/)
 |
-[API documentation ↗](https://vaadin.com/components/vaadin-pdf-viewer/html-api)
+[API documentation ↗](https://cdn.vaadin.com/vaadin-pdf-viewer/1.0.0-alpha11/
 
 [![npm version](https://badgen.net/npm/v/@vaadin/vaadin-pdf-viewer)](https://www.npmjs.com/package/@vaadin/vaadin-pdf-viewer)
 [![Bower version](https://badgen.net/github/release/vaadin/vaadin-pdf-viewer)](https://github.com/vaadin/vaadin-pdf-viewer/releases)
