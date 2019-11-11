@@ -1,6 +1,6 @@
 {
   "name": "@vaadin/vaadin-pdf-viewer",
-  "version": "1.0.0-alpha11",
+  "version": "1.0.0-alpha12",
   "description": "vaadin-pdf-viewer",
   "main": "vaadin-pdf-viewer.html",
   "repository": "vaadin/vaadin-pdf-viewer",
